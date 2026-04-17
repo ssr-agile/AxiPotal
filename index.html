@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Axpert AI">
+
+    <title>axi - Axpert AI</title>
+
+    <!-- Fav Icon -->
+    <link rel="icon" type="image/x-icon" href="assets/imgs/logo/logo-icon.png">
+
+    <!-- All CSS files -->
+    <link rel="stylesheet" href="assets/css/auth.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/progressbar.css">
+    <link rel="stylesheet" href="assets/css/meanmenu.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <style>
+        /* Ensure intl-tel-input dropdown renders above bootstrap modals */
+        .iti--container,
+        .iti-mobile .iti--container,
+        .iti {
+            z-index: 99999 !important;
+        }
+
+        .iti__dropdown-content {
+            z-index: 99999 !important;
+        }
+    </style>
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Microsoft MSAL.js -->
+    <script src="assets/js/msal-browser.min.js"></script>
+    <!-- SuperBase - GitHub & LinkedIn -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+
+<body class="font-heading-PPFragment-TextRegular">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div id="container" class="container-preloader">
+            <div class="animation-preloader">
+                <div class="spinner"></div>
+                <div class="txt-loading">
+                    <span data-text="a" class="characters">a</span>
+                    <span data-text="x" class="characters">x</span>
+                    <span data-text="i" class="characters">i</span>
+
+                </div>
+            </div>
+            <div class="loader-section section-left"></div>
+            <div class="loader-section section-right"></div>
+        </div>
+    </div>
+
+    <!-- Sroll to top -->
+    <div class="progress-wrap">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
+        </svg>
+    </div>
+
+    <!-- search modal start -->
+    <div class="modal fade" id="search-template" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="search-template" aria-hidden="true">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="#" class="form-search">
+                        <input type="text" placeholder="Search">
+                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- search modal end -->
+    <!-- Header area start -->
+    <header class="header-area style-1 pos-abs zi-9">
+        <div class="container container-x-large">
+            <div class="header-area__inner">
+                <div class="header__logo">
+                    <a href="index.html">
+                        <img src="assets/imgs/logo/axi-logo-color.svg" class="normal-logo" alt="Axpert AI">
+                        <img src="assets/imgs/logo/axi-logo-color.svg" class="sticky-logo" alt="Axpert AI">
+                    </a>
+                </div>
+                <div class="header__nav pos-center">
+                    <nav class="main-menu">
+                        <ul>
+                            <li class="">
+                                <a href="index.html">home</a>
+                            </li>
+                            <li><a href="https://agile-labs.com/" target="_blank">Agile Labs</a></li>
+                            <li class="">
+                                <a href="#">Partners</a>
+                            </li>
+
+                            <li><a href="#l">Contacts</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="header__button">
+                    <a href="javascript:void(0)" class="wc-btn wc-btn-normal btn-text-flip" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"> <span data-text="Login">Login</span></a>
+                    <a href="javascript:void(0)" class="wc-btn wc-btn-primary btn-text-flip" data-bs-toggle="modal"
+                        data-bs-target="#signupform">
+                        <span data-text="Sign up">
+                            Sign
+                            up
+                        </span>
+                    </a>
+                </div>
+                <div class="header__navicon d-xl-none">
+                    <button onclick="showCanvas3()" class="open-offcanvas">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header area end -->
+
+    <div class="has-smooth" id="has_smooth"></div>
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            <div class="body-wrapper body-ai-content-writer">
+
+                <!-- overlay switcher close  -->
+                <div class="overlay-switcher-close"></div>
+
+                <main>
+                    <div id="newsticker-container">
+                        <div class="newstick-wrapper">
+                            <ul id="newsticker">
+                                <li>
+                                    <i class="fa fa-fw fa-play state"></i>
+                                    <span class="hour">Jan 12 - </span> Dilmah Signed with Axpert.
+                                </li>
+                                <li>
+                                    <i class="fa fa-fw fa-play state"></i>
+                                    <span class="hour">Jan 14 - </span> Zistha Bangalore Signed with Axpert.
+                                </li>
+                                <li>
+                                    <i class="fa fa-fw fa-play state"></i>
+                                    <span class="hour">Jan 18 - </span> Govt. of Rajasthan Signed with Axpert.
+                                </li>
+                                <li>
+                                    <i class="fa fa-fw fa-play state"></i>
+                                    <span class="hour">Jan 20 - </span> Bapco Energies Signed with Axpert.
+                                </li>
+                                <li>
+                                    <i class="fa fa-fw fa-play state"></i>
+                                    <span class="hour">Jan 22 - </span>Quess Corp Signed with Axpert.
+                                </li>
+
+                            </ul>
+
+                            <i class="fa fa-arrow-left" id="newsticker-prev"></i>
+                            <i class="fa fa-arrow-right" id="newsticker-next"></i>
+
+                        </div>
+                    </div>
+                    <!-- hero area start  -->
+                    <section class="hero-area section-spacing pb-0">
+                        <div class="container">
+                            <div class="hero-area-inner">
+                                <div class="area-shape-1">
+                                    <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+                                </div>
+                                <div class="area-shape-2">
+                                    <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+                                </div>
+                                <div class="section-content">
+                                    <div class="section-title-wrapper">
+                                        <div class="title-wrapper">
+                                            <h1 class="section-title has_fade_anim">
+                                                Simple and Intuitive<span>
+                                                    <span>
+                                                        Business
+                                                        Platform
+                                                    </span>
+                                                </span> <br> for all your Business Needs!
+                                            </h1>
+                                        </div>
+                                    </div>
+                                    <div class="text-wrapper">
+                                        <p class="text has_fade_anim" data-delay="0.3">
+                                            Choose from a list of ready to use packages &
+                                            customize to suit your need or custom build effortlessly.
+                                        </p>
+                                    </div>
+                                    <div class="btn-wrapper has_fade_anim" data-delay="0.45">
+                                        <a href="#" class="wc-btn wc-btn-primary btn-text-flip">
+                                            <span data-text="Get started">
+                                                Get
+                                                started
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="content-bottom">
+                                        <div class="customer-box-wrapper">
+                                            <div class="customer-box has_fade_anim" data-delay=".6">
+                                                <div class="thumbs">
+                                                    <img src="assets/imgs/client/img-s-2.webp" alt="">
+                                                    <img src="assets/imgs/client/img-s-3.webp" alt="">
+                                                    <img src="assets/imgs/client/img-s-4.webp" alt="">
+                                                    <img src="assets/imgs/client/img-add-2.webp" alt="">
+                                                </div>
+                                                <div class="content">
+                                                    <p class="title"><span class="wc-counter">100,000+</span> Active</p>
+                                                    <p class="text">users world-wide</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chatbot-thumb-box">
+                                    <div class="chatbot-thumb">
+                                        <div class="shape-1">
+                                            <img src="assets/imgs/icon/icon-s-18.webp" alt="shape image">
+                                        </div>
+                                        <div class="shape-2" data-speed="0.7">
+                                            <img src="assets/imgs/gallery/img-s-41.webp" alt="shape image">
+                                        </div>
+                                        <div class="card-1">
+                                            <img src="assets/imgs/gallery/axi-bot.png" alt="gallery image">
+                                            <img class="shape-c1-1" src="assets/imgs/shape/shape-s-38.webp"
+                                                alt="shape image">
+                                            <img class="shape-c1-2" src="assets/imgs/shape/shape-s-39.webp"
+                                                alt="shape image">
+                                        </div>
+                                        <div class="card-2" data-speed="1.2">
+                                            <img src="assets/imgs/gallery/img-s-42.webp" alt="gallery image">
+                                            <p>Patented, Proven & secure low code platform </p>
+                                            <span class="tag">Built on Axpert </span>
+                                            <img class="shape-c2-1" src="assets/imgs/shape/shape-s-37.webp"
+                                                alt="shape image">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- hero area end  -->
+                    <!-- features area start  -->
+                    <section class="features-area section-spacing pb-0">
+                        <div class="container">
+                            <div class="features-area-inner">
+                                <div class="section-header">
+                                    <div class="section-title-wrapper">
+                                        <div class="title-wrapper">
+                                            <h2 class="section-title has_fade_anim">
+                                                Command and get the
+                                                instant <span> real content</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="text-wrapper">
+                                        <p class="text has_fade_anim">
+                                            Built on Axpert – Patented, Proven & secure low code platform that is
+                                            used by 100,000+ users in 750+ enterprises across 10+ countries.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="features-wrapper-box">
+                                    <div class="features-wrapper">
+                                        <a href="#">
+                                            <div class="feature-box has_fade_anim">
+                                                <div class="thumb">
+                                                    <img src="assets/imgs/icon/icon-s-24.webp" alt="feature icon">
+                                                </div>
+                                                <div class="content">
+                                                    <h3 class="title">Integrated ERP</h3>
+                                                    <p class="text">
+                                                        Our expert strategists put the odds in your favor and your
+                                                        channel
+                                                    </p>
+                                                    <span href="#" class="wc-btn wc-btn-icon"><i
+                                                            class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="feature-box has_fade_anim" data-delay="0.25">
+                                                <div class="thumb">
+                                                    <img src="assets/imgs/icon/icon-s-25.webp" alt="feature icon">
+                                                </div>
+                                                <div class="content">
+                                                    <h3 class="title">Built for speed</h3>
+                                                    <p class="text">
+                                                        Strong inventory management system including Material
+                                                        requirement planning
+                                                    </p>
+                                                    <span href="#" class="wc-btn wc-btn-icon"><i
+                                                            class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="feature-box has_fade_anim" data-delay="0.35">
+                                                <div class="thumb">
+                                                    <img src="assets/imgs/icon/icon-s-26.webp" alt="feature icon">
+                                                </div>
+                                                <div class="content">
+                                                    <h3 class="title">Asset management system</h3>
+                                                    <p class="text">
+                                                        Our expert strategists put the odds in your favor and your
+                                                        channel
+                                                    </p>
+                                                    <span href="#" class="wc-btn wc-btn-icon"><i
+                                                            class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="feature-box has_fade_anim" data-delay="0.45">
+                                                <div class="thumb">
+                                                    <img src="assets/imgs/icon/icon-s-27.webp" alt="feature icon">
+                                                </div>
+                                                <div class="content">
+                                                    <h3 class="title">Project monitoring system</h3>
+                                                    <p class="text">
+                                                        Our expert strategists put the odds in your favor and your
+                                                        channel
+                                                    </p>
+                                                    <span href="#" class="wc-btn wc-btn-icon"><i
+                                                            class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="feature-box has_fade_anim">
+                                                <div class="thumb">
+                                                    <img src="assets/imgs/icon/icon-s-24.webp" alt="feature icon">
+                                                </div>
+                                                <div class="content">
+                                                    <h3 class="title">Task & Ticket management</h3>
+                                                    <p class="text">
+                                                        Our expert strategists put the odds in your favor and your
+                                                        channel
+                                                    </p>
+                                                    <span href="#" class="wc-btn wc-btn-icon"><i
+                                                            class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="feature-box has_fade_anim" data-delay="0.25">
+                                                <div class="thumb">
+                                                    <img src="assets/imgs/icon/icon-s-25.webp" alt="feature icon">
+                                                </div>
+                                                <div class="content">
+                                                    <h3 class="title">Axpert hybrid</h3>
+                                                    <p class="text">
+                                                        Strong inventory management system including Material
+                                                        requirement planning
+                                                    </p>
+                                                    <span href="#" class="wc-btn wc-btn-icon"><i
+                                                            class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- features area end  -->
+                    <!-- performance area start  -->
+                    <section class="performance-area section-spacing pin__area">
+                        <div class="container">
+                            <div class="performance-area-inner">
+                                <div class="section-content pin__element">
+                                    <div class="section-title-wrapper">
+                                        <div class="subtitle-wrapper">
+                                            <img class="subtitle-img" src="assets/imgs/shape/shape-27-01-2.png">
+                                            <span class="section-subtitle has_fade_anim">Why axi ?</span>
+                                        </div>
+                                        <div class="title-wrapper">
+                                            <h2 class="section-title has_fade_anim">
+                                                Simple but
+                                                powerful
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="text-wrapper">
+                                        <p class="text has_fade_anim">
+                                            Axi is a robust and flexible solution for businesses, particularly for
+                                            those with unique or non-standard operational needs.
+                                            <!--                      The combination of a unified platform and customizable workflows gives users a lot of flexibility, which is a big advantage in today’s dynamic business environments.-->
+                                        </p>
+                                    </div>
+                                    <div class="btn-wrapper has_fade_anim">
+                                        <a href="#" class="wc-btn wc-btn-primary btn-text-flip">
+                                            <span data-text="Schedule Demo">
+                                                Schedule
+                                                Demo
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="performance-features-wrapper-box">
+                                    <div class="performance-features-wrapper has_fade_anim">
+
+                                        <div class="feature-box">
+                                            <div class="thumb">
+                                                <img src="assets/imgs/icon/icon-s-29.webp" alt="feature icon">
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="title">
+                                                    Comprehensive Functionality
+                                                </h3>
+                                                <p class="text">
+                                                    Axi offers integrated management across key business functions, like
+                                                    inventory,
+                                                    assets, accounting, sales, and more. It’s great that it can handle
+                                                    both standard and complex,
+                                                    non-standard business processes.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="feature-box">
+                                            <div class="thumb">
+                                                <img src="assets/imgs/icon/icon-s-31.webp" alt="feature icon">
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="title">
+                                                    Cloud & Security
+                                                </h3>
+                                                <p class="text">
+                                                    Hosting on a secure cloud with compliance to ISO, CMM, and SOC2
+                                                    standards
+                                                    ensures data safety and privacy. The scalability of the platform is
+                                                    a big plus for businesses
+                                                    looking to grow without worrying about infrastructure limitations.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="feature-box">
+                                            <div class="thumb">
+                                                <img src="assets/imgs/icon/icon-s-32.webp" alt="feature icon">
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="title">
+                                                    On-Premise Option
+                                                </h3>
+                                                <p class="text">
+                                                    The option to deploy Axi on-premise caters to businesses that have
+                                                    strict data
+                                                    control requirements, offering flexibility for organizations with
+                                                    specific security or
+                                                    compliance needs.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="feature-box">
+                                            <div class="thumb">
+                                                <img src="assets/imgs/icon/icon-s-32.webp" alt="feature icon">
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="title">
+                                                    Cost Efficiency
+                                                </h3>
+                                                <p class="text">
+                                                    The "pay-for-usage" model is appealing for businesses that want to
+                                                    manage costs
+                                                    based on their actual use of the platform, rather than paying for
+                                                    unused capacity.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="feature-box">
+                                            <div class="thumb">
+                                                <img src="assets/imgs/icon/icon-s-30.webp" alt="feature icon">
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="title">
+                                                    AI Integration
+                                                </h3>
+                                                <p class="text">
+                                                    The inclusion of AI, with the flexibility to choose which AI to use,
+                                                    is a
+                                                    powerful feature. The ability to automate tasks based on AI
+                                                    responses or simply use AI for
+                                                    enhanced decision-making adds a lot of value, especially in areas
+                                                    where data processing or
+                                                    predictive capabilities are crucial.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- performance area end  -->
+                    <!-- choose area start  -->
+                    <section class="choose-area">
+                        <div class="container">
+                            <div class="choose-area-inner">
+                                <div class="section-header">
+                                    <div class="section-title-wrapper">
+                                        <div class="title-wrapper">
+                                            <h2 class="section-title has_fade_anim">Choose it for make your <span>biz
+                                                    easy</span></h2>
+                                        </div>
+                                    </div>
+                                    <div class="meta">
+                                        <div class="text-wrapper">
+                                            <p class="text has_fade_anim">
+                                                Automation builder your performance and more-all from a single
+                                                paltform.
+                                            </p>
+                                        </div>
+                                        <div class="btn-wrapper has_fade_anim">
+                                            <a href="#" class="wc-btn wc-btn-underline btn-text-flip">
+                                                <span data-text="Book a demo">
+                                                    Book a
+                                                    demo
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="choose-cards-wrapper">
+                                    <div class="choose-cards">
+                                        <div class="has_fade_anim">
+                                            <a href="#">
+                                                <div class="choose-card-box">
+                                                    <div class="title-wrapper">
+                                                        <p class="title">
+                                                            Quick message reply
+                                                            in one click.
+                                                        </p>
+                                                    </div>
+                                                    <div class="text-wrapper">
+                                                        <p class="text">24/7 hours available</p>
+                                                    </div>
+                                                    <div class="thumb-wrapper">
+                                                        <img src="assets/imgs/icon/icon-s-15.webp" alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="has_fade_anim">
+                                            <a href="#">
+                                                <div class="choose-card-box">
+                                                    <div class="title-wrapper">
+                                                        <p class="title">Fully responsive built layout. </p>
+                                                    </div>
+                                                    <div class="text-wrapper">
+                                                        <p class="text">For all the device</p>
+                                                    </div>
+                                                    <div class="thumb-wrapper">
+                                                        <img src="assets/imgs/icon/icon-s-16.webp" alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="has_fade_anim">
+                                            <a href="#">
+                                                <div class="choose-card-box">
+                                                    <div class="title-wrapper">
+                                                        <p class="title">
+                                                            Get instant support
+                                                            for all day.
+                                                        </p>
+                                                    </div>
+                                                    <div class="text-wrapper">
+                                                        <p class="text">Getting ready</p>
+                                                    </div>
+                                                    <div class="thumb-wrapper">
+                                                        <img src="assets/imgs/icon/icon-s-17.webp" alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- choose area end  -->
+                    <!-- core features area start  -->
+                    <section class="core-features-area section-spacing pb-0">
+                        <div class="container">
+                            <div class="core-features-area-inner box-anim">
+                                <div class="section-content">
+                                    <div class="section-title-wrapper">
+                                        <div class="title-wrapper">
+                                            <h2 class="section-title has_fade_anim">Axi - AI Assisted</h2>
+                                        </div>
+                                    </div>
+                                    <div class="text-wrapper">
+                                        <p class="text has_fade_anim">
+                                            Your orgranisation needs an AI assisted business platform to stay
+                                            ahead of competition. Axi makes your orgranisation fast and accurate. Move
+                                            from being a reactive
+                                            organisation to a proactive organisation.<br> Make decisions based on your
+                                            own data and insights
+                                            from AI.
+                                        </p>
+                                    </div>
+                                    <div class="feature-list-box">
+                                        <div class="feature-list">
+                                            <div class="feature-list-item has_fade_anim">
+                                                <span class="icon">
+                                                    <img src="assets/imgs/icon/check-7.webp" alt="icon image">
+                                                </span>
+                                                <p class="text">
+                                                    Suited to all your business
+                                                    needs
+                                                </p>
+                                            </div>
+                                            <div class="feature-list-item has_fade_anim" data-delay="0.25">
+                                                <span class="icon">
+                                                    <img src="assets/imgs/icon/check-7.webp" alt="icon image">
+                                                </span>
+                                                <p class="text">
+                                                    Effective solution
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <a href="#" class="wc-btn wc-btn-primary btn-text-flip has_fade_anim">
+                                            <span data-text="Get started">
+                                                Get
+                                                started
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="features-thumb-box">
+                                    <div class="features-thumb">
+                                        <div class="shape-1">
+                                            <img src="assets/imgs/shape/shape-s-40.webp" alt="shape image">
+                                        </div>
+                                        <div class="image-1 wc-y-anim">
+                                            <img src="assets/imgs/gallery/img-s-43.webp" alt="gallery image">
+                                        </div>
+                                        <div class="card-1">
+                                            <img src="assets/imgs/icon/icon-s-18.webp" alt="shape image">
+                                            <p>
+                                                Most powerful features
+                                                included to Axpert
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- core features area end  -->
+                    <!-- community area start  -->
+                    <section class="community-area section-spacing pb-0">
+                        <div class="container">
+                            <div class="community-area-inner">
+                                <div class="community-thumb-box">
+                                    <div class="community-thumb has_fade_anim" data-fade-offset="0">
+                                        <img src="assets/imgs/gallery/img-s-46.webp" alt="gallery image">
+                                    </div>
+                                </div>
+                                <div class="section-content">
+                                    <div class="section-title-wrapper">
+                                        <div class="title-wrapper">
+                                            <h2 class="section-title has_fade_anim">
+                                                Do it
+                                                <span>yourself</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="text-wrapper">
+                                        <p class="text has_fade_anim">
+                                            Your business practicies differentiates your enterprise. These could
+                                            be non standard. Everyone will advise you to standardize. You do not need
+                                            to.<br><br> You can now
+                                            find simple solutions for your complex needs with Axpert. Agile experts will
+                                            collaborate with you
+                                            to help you convert your ideas to reality.
+                                        </p>
+                                    </div>
+                                    <div class="btn-wrapper has_fade_anim">
+                                        <a href="#" class="wc-btn wc-btn-primary btn-text-flip">
+                                            <span data-text="Join Axpert">
+                                                Join
+                                                Axpert
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="counter-wrapper-box">
+                                        <div class="counter-wrapper">
+                                            <div class="counter-box has_fade_anim">
+                                                <h3 class="number wc-counter">1L+</h3>
+                                                <p class="text">Users</p>
+                                            </div>
+                                            <div class="counter-box has_fade_anim" data-delay="0.25">
+                                                <h3 class="number wc-counter">750+</h3>
+                                                <p class="text">Enterprises</p>
+                                            </div>
+                                            <div class="counter-box has_fade_anim" data-delay="0.5">
+                                                <h3 class="number wc-counter">10+</h3>
+                                                <p class="text">Countries</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- community area end  -->
+                    <!-- brand area start  -->
+                    <div class="brand-area section-spacing-bottom has_fade_anim">
+                        <div class="container">
+                            <div class="text-wrapper">
+                                <h2 class="section-title has_fade_anim">1Lakh users worldwide</h2>
+                                <p class="text">Axpert software trusted by the great company</p>
+                            </div>
+                            <div class="brand-logos">
+                                <div class="swiper brand-active">
+                                    <div class="swiper-wrapper">
+
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/dilmah.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/lexir.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/bapco.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/salcomp.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/Alnowras.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/reitzel.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/quess.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/GI.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/sanzi.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/tvs.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/avdel.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/Zishta_Logo.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/sts.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/maris.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/formula.png" alt="logo">
+                                            </div>
+                                        </div>
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/tvs.png" alt="logo">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/BMRCL.png" alt="logo">
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/Kauvery-Hospital.png" alt="logo">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/BNB.png" alt="logo">
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/Government-of-Rajasthan.png" alt="logo">
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/Al-Turki.png" alt="logo">
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <div class="logo">
+                                                <img src="assets/imgs/partners/Assurant.png" alt="logo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- brand area end  -->
+                    <!-- testimonial area start  -->
+                    <section class="testimonial-area section-spacing pb-0">
+                        <div class="container">
+                            <div class="section-header">
+                                <div class="section-title-wrapper">
+                                    <div class="title-wrapper">
+                                        <h2 class="section-title has_fade_anim">What the <span>users says</span></h2>
+                                    </div>
+                                </div>
+                                <div class="text-wrapper">
+                                    <p class="text has_fade_anim">
+                                        Leave pen-and-paper bookings in the past allowing you to focus more on
+                                        your business
+                                        or simply enjoy your newfound free time.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="testimonial-wrapper-box">
+                                <div class="testimonial-wrapper has_fade_anim">
+                                    <div class="testimonial-items fix">
+                                        <div class="swiper testimonial-slider">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide">
+                                                    <div class="testimonial-item has-border">
+                                                        <div class="content">
+                                                            <div class="text-wrapper">
+                                                                <div class="quote-icon-wrap">
+                                                                    <img src="assets/imgs/icon/quote-3.webp"
+                                                                        alt="Quote Icon" class="quote-icon">
+                                                                </div>
+                                                                <p class="text">
+                                                                    We’ve had good experiences with call centers through
+                                                                    binox. We hired my
+                                                                    own remote team that I have complete control over
+                                                                    the remote team that means work from
+                                                                    home at anywhere
+                                                                </p>
+                                                            </div>
+                                                            <div class="meta-info">
+                                                                <div class="meta-data">
+                                                                    <p class="name">Mark Henry</p>
+                                                                    <p class="post">Developer, Oklavery</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="testimonial-item has-border">
+                                                        <div class="content">
+                                                            <div class="text-wrapper">
+                                                                <div class="quote-icon-wrap">
+                                                                    <img src="assets/imgs/icon/quote-3.webp"
+                                                                        alt="Quote Icon" class="quote-icon">
+                                                                </div>
+                                                                <p class="text">
+                                                                    Axpert AI for managing every stage of funding and
+                                                                    selling. It’s
+                                                                    increased
+                                                                    our team’s efficiency and our ability to oversee
+                                                                    transactions with automation. So we
+                                                                    need more services.
+                                                                </p>
+                                                            </div>
+                                                            <div class="meta-info">
+                                                                <div class="meta-data">
+                                                                    <p class="name">Janathan Deo</p>
+                                                                    <p class="post">Developer, Oklavery</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="testimonial-item has-border">
+                                                        <div class="content">
+                                                            <div class="text-wrapper">
+                                                                <div class="quote-icon-wrap">
+                                                                    <img src="assets/imgs/icon/quote-3.webp"
+                                                                        alt="Quote Icon" class="quote-icon">
+                                                                </div>
+                                                                <p class="text">
+                                                                    We’ve had good experiences with call centers through
+                                                                    binox. We hired my
+                                                                    own remote team that I have complete control over
+                                                                    the remote team that means work from
+                                                                    home at anywhere
+                                                                </p>
+                                                            </div>
+                                                            <div class="meta-info">
+                                                                <div class="meta-data">
+                                                                    <p class="name">Mark Henry</p>
+                                                                    <p class="post">Developer, Oklavery</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="testimonial-item has-border">
+                                                        <div class="content">
+                                                            <div class="text-wrapper">
+                                                                <div class="quote-icon-wrap">
+                                                                    <img src="assets/imgs/icon/quote-3.webp"
+                                                                        alt="Quote Icon" class="quote-icon">
+                                                                </div>
+                                                                <p class="text">
+                                                                    Axpert AI for managing every stage of funding and
+                                                                    selling. It’s
+                                                                    increased
+                                                                    our team’s efficiency and our ability to oversee
+                                                                    transactions with automation. So we
+                                                                    need more services.
+                                                                </p>
+                                                            </div>
+                                                            <div class="meta-info">
+                                                                <div class="meta-data">
+                                                                    <p class="name">Janathan Deo</p>
+                                                                    <p class="post">Developer, Oklavery</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-pagination pagination"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="testimonial-rating">
+                                    <p class="rating-subtitle">Average Rating</p>
+                                    <h2 class="rating-title">4.9</h2>
+                                    <div class="star-icons">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <p class="disc">(30+) Customer <br> reviews</p>
+                                    <div class="divide-border"></div>
+                                    <div class="testimonial-nav">
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- /testimonial area end  -->
+                    <!-- cta area start  -->
+                    <section class="cta-area">
+                        <div class="container">
+                            <div class="cta-area-inner section-spacing">
+                                <div class="section-header">
+                                    <div class="section-title-wrapper">
+                                        <div class="title-wrapper">
+                                            <h2 class="section-title has_fade_anim">
+                                                Unleash the
+                                                <span>Power!</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="text-wrapper">
+                                        <p class="text has_fade_anim">
+                                            Unleash the power of AI with Axpert. Upgrade your Business with
+                                            Axpert.
+                                        </p>
+                                    </div>
+                                    <div class="btn-wrapper has_fade_anim">
+                                        <a href="#" class="wc-btn wc-btn-primary bordered btn-text-flip">
+                                            <span data-text="Get started">
+                                                Get
+                                                started
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- cta area end  -->
+                    <!-- AXI signup success static panel -->
+                    <section id="axi-signup-message-panel" class="section-spacing" style="display:none;">
+                        <div class="container">
+                            <div class="alert alert-success" role="alert"
+                                style="max-width:720px;margin:0 auto;text-align:center;">
+                                <h4 style="margin-bottom:12px;color:#155724;">🎉 Congratulations!</h4>
+                                <p class="mb-2" style="font-size:16px;">
+                                    Your axi account has been created, your credentials will be mailed to you shortly
+                                </p>
+                                <p class="mb-0">
+                                    Click here to
+                                    <a href="javascript:void(0)" id="axi-login-link">login using your credentials</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                </main>
+
+                <!-- footer area start  -->
+                <footer class="footer-area style-1">
+                    <div class="container">
+                        <div class="footer-area-inner">
+                            <div class="footer-widget-wrapper">
+                                <div class="footer-logo">
+                                    <img src="assets/imgs/logo/axi-logo-color.svg" alt="site-logo">
+                                </div>
+                                <div class="description-text">
+                                    <div class="text-wrapper">
+                                        <p class="text">
+                                            Axpert is a real early-stage software looking for an analytics platform that
+                                            scales
+                                            with you, check out our stage program.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer-widget-wrapper">
+                                <h2 class="title">Company</h2>
+                                <ul class="footer-nav-list">
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Careers</a></li>
+                                    <li><a href="#">Press</a></li>
+                                    <li><a href="#">Partners</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-widget-wrapper">
+                                <h2 class="title">Useful Link</h2>
+                                <ul class="footer-nav-list">
+                                    <li><a href="#">Features</a></li>
+                                    <li><a href="#">Resources</a></li>
+                                    <li><a href="#">Service</a></li>
+                                    <li><a href="#">Team</a></li>
+                                    <li><a href="#">Collection</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-widget-wrapper">
+                                <h2 class="title">Product</h2>
+                                <ul class="footer-nav-list">
+                                    <li><a href="#">ERP</a></li>
+                                    <li><a href="#">Portals</a></li>
+                                    <li><a href="#">Tools</a></li>
+                                    <li><a href="#">HR &amp; Payroll</a></li>
+                                    <li><a href="#">CMS</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="copyright-area-inner">
+                            <div class="copyright-text">
+                                <p class="text">© 2026. All Right Reserved.</p>
+                            </div>
+
+                            <ul class="social-links">
+                                <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </footer>
+                <!-- footer area end  -->
+            </div>
+        </div>
+    </div>
+
+    <!-- login form  -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div id="axi-login-loader" class="axi-modal-loader d-none" aria-live="polite" aria-busy="true">
+            <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+            <div id="axi-login-loader-text" class="mt-2 small">Please wait…</div>
+        </div>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="form-box-wrapper">
+                    <div class="login-form-box">
+                        <div class="btn-wrapper">
+                            <button class="close-btn" data-bs-dismiss="modal">
+                                <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                            </button>
+                        </div>
+                        <div class="title-wrapper">
+                            <h2 class="title">
+                                <span>
+                                    Welcome <br>
+                                    Back to
+                                </span> Axi
+                            </h2>
+                        </div>
+                        <div class="icon">
+                            <img src="assets/imgs/shape/shape-s-55.webp" alt="shape image">
+                        </div>
+                        <div class="form-wrapper">
+                            <!-- Social login -->
+                            <div class="social-login-btns">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('google')">
+                                    <svg viewBox="0 0 48 48">
+                                        <path fill="#EA4335"
+                                            d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.8 2.5 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.3 13 17.7 9.5 24 9.5z" />
+                                        <path fill="#4285F4"
+                                            d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 6.9-9.9 6.9-17z" />
+                                        <path fill="#FBBC05"
+                                            d="M10.4 28.7A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.8-6z" />
+                                        <path fill="#34A853"
+                                            d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.7 2.2-7.7 2.2-6.3 0-11.7-4.3-13.6-10l-7.8 6C6.6 42.6 14.6 48 24 48z" />
+                                    </svg>
+                                    Continue with Google
+                                </button>
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('microsoft')">
+                                    <svg viewBox="0 0 21 21">
+                                        <rect x="0" y="0" width="10" height="10" fill="#F25022" />
+                                        <rect x="11" y="0" width="10" height="10" fill="#7FBA00" />
+                                        <rect x="0" y="11" width="10" height="10" fill="#00A4EF" />
+                                        <rect x="11" y="11" width="10" height="10" fill="#FFB900" />
+                                    </svg>
+                                    Continue with Microsoft
+                                </button>
+                                <!-- <button type="button" class="social-btn" onclick="axiSocialLogin('linkedin')">
+                                    <svg viewBox="0 0 24 24" fill="#0A66C2">
+                                        <path
+                                            d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM3.56 20.45h3.57V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.27V1.73C24 .77 23.21 0 22.22 0z" />
+                                    </svg>
+                                    Continue with LinkedIn
+                                </button> -->
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('github')">
+                                    <svg fill="#000000" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="m12.301 0h.093c2.242 0 4.34.613 6.137 1.68l-.055-.031c1.871 1.094 3.386 2.609 4.449 4.422l.031.058c1.04 1.769 1.654 3.896 1.654 6.166 0 5.406-3.483 10-8.327 11.658l-.087.026c-.063.02-.135.031-.209.031-.162 0-.312-.054-.433-.144l.002.001c-.128-.115-.208-.281-.208-.466 0-.005 0-.01 0-.014v.001q0-.048.008-1.226t.008-2.154c.007-.075.011-.161.011-.249 0-.792-.323-1.508-.844-2.025.618-.061 1.176-.163 1.718-.305l-.076.017c.573-.16 1.073-.373 1.537-.642l-.031.017c.508-.28.938-.636 1.292-1.058l.006-.007c.372-.476.663-1.036.84-1.645l.009-.035c.209-.683.329-1.468.329-2.281 0-.045 0-.091-.001-.136v.007c0-.022.001-.047.001-.072 0-1.248-.482-2.383-1.269-3.23l.003.003c.168-.44.265-.948.265-1.479 0-.649-.145-1.263-.404-1.814l.011.026c-.115-.022-.246-.035-.381-.035-.334 0-.649.078-.929.216l.012-.005c-.568.21-1.054.448-1.512.726l.038-.022-.609.384c-.922-.264-1.981-.416-3.075-.416s-2.153.152-3.157.436l.081-.02q-.256-.176-.681-.433c-.373-.214-.814-.421-1.272-.595l-.066-.022c-.293-.154-.64-.244-1.009-.244-.124 0-.246.01-.364.03l.013-.002c-.248.524-.393 1.139-.393 1.788 0 .531.097 1.04.275 1.509l-.01-.029c-.785.844-1.266 1.979-1.266 3.227 0 .025 0 .051.001.076v-.004c-.001.039-.001.084-.001.13 0 .809.12 1.591.344 2.327l-.015-.057c.189.643.476 1.202.85 1.693l-.009-.013c.354.435.782.793 1.267 1.062l.022.011c.432.252.933.465 1.46.614l.046.011c.466.125 1.024.227 1.595.284l.046.004c-.431.428-.718 1-.784 1.638l-.001.012c-.207.101-.448.183-.699.236l-.021.004c-.256.051-.549.08-.85.08-.022 0-.044 0-.066 0h.003c-.394-.008-.756-.136-1.055-.348l.006.004c-.371-.259-.671-.595-.881-.986l-.007-.015c-.198-.336-.459-.614-.768-.827l-.009-.006c-.225-.169-.49-.301-.776-.38l-.016-.004-.32-.048c-.023-.002-.05-.003-.077-.003-.14 0-.273.028-.394.077l.007-.003q-.128.072-.08.184c.039.086.087.16.145.225l-.001-.001c.061.072.13.135.205.19l.003.002.112.08c.283.148.516.354.693.603l.004.006c.191.237.359.505.494.792l.01.024.16.368c.135.402.38.738.7.981l.005.004c.3.234.662.402 1.057.478l.016.002c.33.064.714.104 1.106.112h.007c.045.002.097.002.15.002.261 0 .517-.021.767-.062l-.027.004.368-.064q0 .609.008 1.418t.008.873v.014c0 .185-.08.351-.208.466h-.001c-.119.089-.268.143-.431.143-.075 0-.147-.011-.214-.032l.005.001c-4.929-1.689-8.409-6.283-8.409-11.69 0-2.268.612-4.393 1.681-6.219l-.032.058c1.094-1.871 2.609-3.386 4.422-4.449l.058-.031c1.739-1.034 3.835-1.645 6.073-1.645h.098-.005zm-7.64 17.666q.048-.112-.112-.192-.16-.048-.208.032-.048.112.112.192.144.096.208-.032zm.497.545q.112-.08-.032-.256-.16-.144-.256-.048-.112.08.032.256.159.157.256.047zm.48.72q.144-.112 0-.304-.128-.208-.272-.096-.144.08 0 .288t.272.112zm.672.673q.128-.128-.064-.304-.192-.192-.32-.048-.144.128.064.304.192.192.32.044zm.913.4q.048-.176-.208-.256-.24-.064-.304.112t.208.24q.24.097.304-.096zm1.009.08q0-.208-.272-.176-.256 0-.256.176 0 .208.272.176.256.001.256-.175zm.929-.16q-.032-.176-.288-.144-.256.048-.224.24t.288.128.225-.224z">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                    Continue with GitHub
+                                </button>
+                            </div>
+                            <div class="social-login-divider"><span>OR</span></div>
+
+                            <form id="axi-login-form" class="user-form" novalidate>
+                                <div id="axi-login-error" class="alert alert-danger d-none" role="alert"></div>
+
+                                <div id="axi-login-step-1">
+                                    <div class="input-field">
+                                        <input type="email" id="axi-login-email-id" placeholder="Enter your work email"
+                                            class="mb-3" autocomplete="on" required />
+                                    </div>
+                                    <!-- <div class="input-field">
+                                        <input type="text" id="axi-login-account-id" placeholder="Enter AXI Account ID"
+                                            autocomplete="off" required />
+                                    </div> -->
+                                    <!--
+                                    <div class="input-field">
+                                      <input type="text" id="axi-login-username" placeholder="Enter username" autocomplete="username"
+                                        required />
+                                    </div> -->
+
+                                    <!-- <div class="policy-field">
+                                        <input type="checkbox" id="axi-login-remember" checked />
+                                        <label for="axi-login-remember">Remember AXI Account ID</label>
+                                    </div> -->
+
+                                    <button type="button" id="axi-login-continue"
+                                        class="subscribe-btn wc-btn-primary btn-text-flip large">
+                                        <span data-text="Continue">Continue</span>
+                                    </button>
+                                </div>
+
+                                <!-- <div id="axi-login-step-2" class="d-none">
+                                    <div class="input-field">
+                                        <input type="password" id="axi-login-password" placeholder="Enter password"
+                                            autocomplete="current-password" required />
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <button type="button" id="axi-login-back"
+                                            class="subscribe-btn wc-btn-primary btn-text-flip large"
+                                            style="background:#6c757d;border-color:#6c757d;">
+                                            <span data-text="Back">Back</span>
+                                        </button>
+
+                                        <button type="submit" class="subscribe-btn wc-btn-primary btn-text-flip large">
+                                            <span data-text="Login">Login</span>
+                                        </button>
+                                    </div>
+                                </div> -->
+                            </form>
+                        </div>
+                        <div class="note">
+                            <p>
+                                Don't have an account? <span>
+                                    <a href="javascript:void(0)" data-bs-dismiss="modal" data-bs-toggle="modal"
+                                        data-bs-target="#signupform">Create Here!</a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- signup form  -->
+    <div class="modal fade" id="signupform" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+
+        <div class="gradient-bg">
+            <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+        </div>
+
+        <!-- Signup modal loader (overlay) -->
+        <div id="axi-signup-loader" class="axi-modal-loader d-none" aria-live="polite" aria-busy="true">
+            <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+            <div id="axi-signup-loader-text" class="mt-2 small">Please wait…</div>
+        </div>
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="gradient-bg">
+                    <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+                </div>
+
+
+                <div class="form-box-wrapper box-anim">
+
+                    <!-- registration form -->
+                    <div class="register-form-box  ">
+                        <div class="Form-robo wc-y-anim" data-speed="0.7" data-lag="0">
+                            <img src="assets/imgs/gallery/img-s-41.webp" alt="shape image">
+                        </div>
+
+                        <div class="btn-wrapper">
+                            <button class="close-btn" data-bs-dismiss="modal">
+                                <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                            </button>
+                        </div>
+                        <div class="title-wrapper">
+                            <img src="assets/imgs/logo/axi-logo-color.svg" alt="Axpert AI" class="form-logo">
+                            <h2 class="title">
+                                Account Registration
+                            </h2>
+                        </div>
+
+                        <div class="form-wrapper flex-grow-1 d-flex flex-column justify-content-center">
+                            <!-- AXI account registration popup -->
+                            <!-- Social login -->
+                            <div class="social-login-btns">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('google')">
+                                    <svg viewBox="0 0 48 48">
+                                        <path fill="#EA4335"
+                                            d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.8 2.5 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.3 13 17.7 9.5 24 9.5z" />
+                                        <path fill="#4285F4"
+                                            d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 6.9-9.9 6.9-17z" />
+                                        <path fill="#FBBC05"
+                                            d="M10.4 28.7A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.8-6z" />
+                                        <path fill="#34A853"
+                                            d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.7 2.2-7.7 2.2-6.3 0-11.7-4.3-13.6-10l-7.8 6C6.6 42.6 14.6 48 24 48z" />
+                                    </svg>
+                                    Continue with Google
+                                </button>
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('microsoft')">
+                                    <svg viewBox="0 0 21 21">
+                                        <rect x="0" y="0" width="10" height="10" fill="#F25022" />
+                                        <rect x="11" y="0" width="10" height="10" fill="#7FBA00" />
+                                        <rect x="0" y="11" width="10" height="10" fill="#00A4EF" />
+                                        <rect x="11" y="11" width="10" height="10" fill="#FFB900" />
+                                    </svg>
+                                    Continue with Microsoft
+                                </button>
+                                <!-- <button type="button" class="social-btn" onclick="axiSocialLogin('linkedin')">
+                                    <svg viewBox="0 0 24 24" fill="#0A66C2">
+                                        <path
+                                            d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM3.56 20.45h3.57V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.27V1.73C24 .77 23.21 0 22.22 0z" />
+                                    </svg>
+                                    Continue with LinkedIn
+                                </button> -->
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('github')">
+                                    <svg fill="#000000" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="m12.301 0h.093c2.242 0 4.34.613 6.137 1.68l-.055-.031c1.871 1.094 3.386 2.609 4.449 4.422l.031.058c1.04 1.769 1.654 3.896 1.654 6.166 0 5.406-3.483 10-8.327 11.658l-.087.026c-.063.02-.135.031-.209.031-.162 0-.312-.054-.433-.144l.002.001c-.128-.115-.208-.281-.208-.466 0-.005 0-.01 0-.014v.001q0-.048.008-1.226t.008-2.154c.007-.075.011-.161.011-.249 0-.792-.323-1.508-.844-2.025.618-.061 1.176-.163 1.718-.305l-.076.017c.573-.16 1.073-.373 1.537-.642l-.031.017c.508-.28.938-.636 1.292-1.058l.006-.007c.372-.476.663-1.036.84-1.645l.009-.035c.209-.683.329-1.468.329-2.281 0-.045 0-.091-.001-.136v.007c0-.022.001-.047.001-.072 0-1.248-.482-2.383-1.269-3.23l.003.003c.168-.44.265-.948.265-1.479 0-.649-.145-1.263-.404-1.814l.011.026c-.115-.022-.246-.035-.381-.035-.334 0-.649.078-.929.216l.012-.005c-.568.21-1.054.448-1.512.726l.038-.022-.609.384c-.922-.264-1.981-.416-3.075-.416s-2.153.152-3.157.436l.081-.02q-.256-.176-.681-.433c-.373-.214-.814-.421-1.272-.595l-.066-.022c-.293-.154-.64-.244-1.009-.244-.124 0-.246.01-.364.03l.013-.002c-.248.524-.393 1.139-.393 1.788 0 .531.097 1.04.275 1.509l-.01-.029c-.785.844-1.266 1.979-1.266 3.227 0 .025 0 .051.001.076v-.004c-.001.039-.001.084-.001.13 0 .809.12 1.591.344 2.327l-.015-.057c.189.643.476 1.202.85 1.693l-.009-.013c.354.435.782.793 1.267 1.062l.022.011c.432.252.933.465 1.46.614l.046.011c.466.125 1.024.227 1.595.284l.046.004c-.431.428-.718 1-.784 1.638l-.001.012c-.207.101-.448.183-.699.236l-.021.004c-.256.051-.549.08-.85.08-.022 0-.044 0-.066 0h.003c-.394-.008-.756-.136-1.055-.348l.006.004c-.371-.259-.671-.595-.881-.986l-.007-.015c-.198-.336-.459-.614-.768-.827l-.009-.006c-.225-.169-.49-.301-.776-.38l-.016-.004-.32-.048c-.023-.002-.05-.003-.077-.003-.14 0-.273.028-.394.077l.007-.003q-.128.072-.08.184c.039.086.087.16.145.225l-.001-.001c.061.072.13.135.205.19l.003.002.112.08c.283.148.516.354.693.603l.004.006c.191.237.359.505.494.792l.01.024.16.368c.135.402.38.738.7.981l.005.004c.3.234.662.402 1.057.478l.016.002c.33.064.714.104 1.106.112h.007c.045.002.097.002.15.002.261 0 .517-.021.767-.062l-.027.004.368-.064q0 .609.008 1.418t.008.873v.014c0 .185-.08.351-.208.466h-.001c-.119.089-.268.143-.431.143-.075 0-.147-.011-.214-.032l.005.001c-4.929-1.689-8.409-6.283-8.409-11.69 0-2.268.612-4.393 1.681-6.219l-.032.058c1.094-1.871 2.609-3.386 4.422-4.449l.058-.031c1.739-1.034 3.835-1.645 6.073-1.645h.098-.005zm-7.64 17.666q.048-.112-.112-.192-.16-.048-.208.032-.048.112.112.192.144.096.208-.032zm.497.545q.112-.08-.032-.256-.16-.144-.256-.048-.112.08.032.256.159.157.256.047zm.48.72q.144-.112 0-.304-.128-.208-.272-.096-.144.08 0 .288t.272.112zm.672.673q.128-.128-.064-.304-.192-.192-.32-.048-.144.128.064.304.192.192.32.044zm.913.4q.048-.176-.208-.256-.24-.064-.304.112t.208.24q.24.097.304-.096zm1.009.08q0-.208-.272-.176-.256 0-.256.176 0 .208.272.176.256.001.256-.175zm.929-.16q-.032-.176-.288-.144-.256.048-.224.24t.288.128.225-.224z">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                    Continue with GitHub
+                                </button>
+                            </div>
+                        </div>
+                        <div class="social-login-divider"><span>OR</span></div>
+
+                        <form id="axi-account-form" class="user-form" novalidate>
+                            <div id="axi-account-error" class="alert alert-danger d-none" role="alert"></div>
+
+                            <!-- Step 0: Basic inputs -->
+                            <div id="axi-basic-fields">
+                                <div class="input-field">
+                                    <input type="email" id="axi-email" placeholder="Enter your work email" required>
+                                </div>
+                                <!-- <div class="input-field">
+                                      <input type="text" id="axi-org-name" placeholder="Organisation name" required>
+                                    </div>
+
+                                    <div class="input-field">
+                                      <div class="d-flex align-items-center">
+                                        <input type="text" id="axi-account-id" placeholder="Enter AXI Account ID" class="me-2"
+                                          maxlength="8" />
+
+                                        <button type="button" id="axi-regenerate-id" class="wc-btn ">
+                                          Regenerate
+                                        </button>
+                                      </div>
+                                    </div> -->
+                            </div>
+
+                            <!-- Buttons: Next + Create (Create stays disabled until final chunk) -->
+                            <div class="d-flex gap-2 mt-3">
+                                <button type="submit" id="axi-signup-next-btn"
+                                    class="subscribe-btn wc-btn-primary btn-text-flip large">
+                                    <span data-text="Next">Next</span>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="note">
+                            <p>
+                                Already have an account? <span>
+                                    <a href="javascript:void(0)" data-bs-dismiss="modal" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">Login Here!</a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AXI account company details popup -->
+    <div class="modal fade" id="axiCompanyDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+
+        <div class="gradient-bg">
+            <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+        </div>
+
+        <!-- companydetails modal loader (overlay) -->
+        <div id="axi-companydetails-loader" class="axi-modal-loader d-none" aria-live="polite" aria-busy="true">
+            <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+            <div id="axi-companydetails-loader-text" class="mt-2 small">Please wait…</div>
+        </div>
+
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="overflow-y: scroll; overflow-x: visible;">
+            <div class="modal-content">
+                <div class="gradient-bg">
+                    <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+                </div>
+                <div class="form-box-wrapper box-anim">
+                    <div class="register-form-box">
+
+                        <div class="Form-robo wc-y-anim" data-speed="0.7" data-lag="0">
+                            <img src="assets/imgs/gallery/img-s-41.webp" alt="shape image">
+                        </div>
+
+                        <div class="btn-wrapper">
+                            <button class="close-btn" data-bs-dismiss="modal">
+                                <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                            </button>
+                        </div>
+                        <div class="title-wrapper">
+                            <img src="assets/imgs/logo/axi-logo-color.svg" alt="Axpert AI" class="form-logo">
+                            <h2 class="title">
+                                Company
+                                details
+                            </h2>
+                        </div>
+
+                        <div class="form-wrapper">
+                            <form id="axi-company-form" class="user-form" novalidate>
+                                <div id="axi-company-error" class="alert alert-danger d-none" role="alert"></div>
+                                <!-- <div class="d-flex flex-column justify-content-center gap-3"> -->
+                                <div class="input-field field-full-width">
+                                    <input type="text" id="axi-company-org-name" placeholder="Organisation name">
+                                </div>
+                                <div class="input-field field-full-width">
+                                    <div class="d-flex align-items-center">
+                                        <input type="text" id="axi-account-id" placeholder="Enter AXI Account ID"
+                                            class="me-2 field-full-width" maxlength="8" />
+
+                                        <button type="button" id="axi-check-id" class=".wc-btn-primary me-2 d-none">
+                                            Check
+                                        </button>
+                                        <button type="button" id="axi-regenerate-id" class=".wc-btn-primary">
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="lucide lucide-refresh-cw-icon lucide-refresh-cw">
+                                                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                                                <path d="M21 3v5h-5" />
+                                                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                                                <path d="M8 16H3v5" />
+                                            </svg> -->
+                                            Regenerate
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                                <div class="input-field">
+                                    <input type="text" id="axi-country" placeholder="Country">
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" id="axi-state" placeholder="State / Province">
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" id="axi-address" placeholder="Address">
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" id="axi-contact-person" placeholder="Contact person name">
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" id="axi-tax-no" placeholder="Tax No (GST / VAT)">
+                                </div>
+                                <div class="input-field">
+                                    <input type="tel" id="axi-mobile" placeholder="Mobile number">
+                                </div>
+
+                                <div class="d-flex just mt-3 input-field field-full-width">
+                                    <!-- <button type="button" id="axi-company-skip" class="wc-btn ">
+                                      Skip Now
+                                    </button> -->
+                                    <button type="submit" class="subscribe-btn wc-btn-primary btn-text-flip large">
+                                        <span data-text="Continue">Continue</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- AXI visual flow modal -->
+    <div class="modal fade" id="axiVisualFlowModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="gradient-bg">
+            <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+        </div>
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="form-box-wrapper box-anim">
+                    <div class="register-form-box">
+                        <div class="Form-robo wc-y-anim" data-speed="0.7" data-lag="0">
+                            <img src="assets/imgs/gallery/img-s-41.webp" alt="shape image">
+                        </div>
+                        <div class="btn-wrapper">
+                            <button class="close-btn" data-bs-dismiss="modal">
+                                <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                            </button>
+                        </div>
+
+                        <div class="title-wrapper">
+                            <img src="assets/imgs/logo/axi-logo-color.svg" alt="Axpert AI" class="form-logo">
+                            <h2 class="title">visual flow</h2>
+                        </div>
+
+                        <div class="form-wrapper flex-grow-1 d-flex flex-column justify-content-center">
+                            <div id="axi-chunk-fields" style="padding-top:6px">
+                                <div id="axi-chunk-progress"></div>
+
+                                <div class="AXI-Chunk-Wrapper">
+
+                                    <div id="axi-chunk-image">
+                                        <img id="axi-chunk-img" src="" alt="">
+                                    </div>
+
+                                    <div class="AXI-Chunk-Content">
+                                        <h4 id="axi-chunk-title"></h4>
+                                        <p id="axi-chunk-body"></p>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mt-3">
+                                    <button type="button" id="axi-visual-next-btn"
+                                        class="subscribe-btn wc-btn-primary btn-text-flip large">
+                                        <span data-text="Next">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success pop up -->
+    <div class="modal fade" id="redirectModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="false"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered custom-modal-size">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-check-circle text-success" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h5 class="fw-bold" id="redirectModalTitle">Success!</h5>
+                    <p id="redirectModalMessage" class="text-muted small mb-2"></p>
+                    <p class="small text-secondary mb-2">Redirecting you in a moment...</p>
+                    <!-- <button type="button" id="btnRedirectNow" class="btn btn-sm btn-success w-100 rounded-pill">Proceed
+                    Now</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="modal fade" id="signupSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-custom shadow-lg">
+                <div class="modal-body text-center p-5">
+
+                    <div class="icon-circle shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-badge-check-icon lucide-badge-check">
+                            <path
+                                d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
+                    </div>
+
+                    <h3 class="fw-bold mb-2" style="color: #2d3436;">Success! We're on it.</h3>
+                    <p class="text-secondary mb-4">Your account is being carefully prepared. This process ensures
+                        everything is secure and ready for your first login.</p>
+
+                    <div class="p-3 mb-4" style="background-color: #f1f3f5; border-left: 4px solid #1e7e34;">
+                        <div class="d-flex align-items-start justify-content-start gap-2 text-dark">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 16v-4" />
+                                    <path d="M12 8h.01" />
+                                </svg></span>
+                            <div class="d-flex align-items-start justify-content-center gap-3 flex-column text-start">
+                                <span class="small">
+                                    <strong>Check your inbox:</strong> We'll send a link to <strong>activate</strong>
+                                    your access once the setup is finished.
+                                </span>
+                                <span class=" small">
+                                    Use the link in the email or return here to
+                                    <a href="javascript:void(0)" class="wc-btn wc-btn-normal btn-text-flip"
+                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop"> <span data-text="Login"
+                                            style="color: #1e7e34;">Login</span></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-gradient w-100 py-3 rounded-pill" data-bs-dismiss="modal">
+                        Great, I'll wait for the email
+                    </button>
+
+                    <p class="mt-4 mb-0 tiny text-muted" style="font-size: 0.8rem;">
+                        Didn't receive it? Check your spam folder in about 5 minutes.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="modal fade" id="signupSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-custom shadow-lg"
+                style="border-radius: 16px; overflow: hidden; border: none;">
+
+                <div class="text-center p-4"
+                    style="background: linear-gradient(135deg, #4f46e5, #4338ca); color: white;">
+                    <div style="font-size: 24px; font-weight: 700; letter-spacing: 1px;">AXI</div>
+                    <div style="font-size: 12px; opacity: 0.9;">Cloud Application Platform</div>
+                </div>
+
+                <div class="modal-body text-center p-5">
+                    <div class="icon-circle shadow-sm mb-4" style="color: #4f46e5;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-badge-check">
+                            <path
+                                d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
+                    </div>
+
+                    <h3 class="fw-bold mb-2" style="color: #2d3436;">Welcome to AXI</h3>
+                    <p class="text-secondary mb-4">Your workspace is being prepared. Secure access is ready in seconds
+                        with no setup required.</p>
+
+                    <div class="p-3 mb-4" style="background-color: #f9fafb; border-left: 4px solid #4f46e5;">
+                        <div class="d-flex align-items-start justify-content-start gap-2 text-dark">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-mail">
+                                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                </svg>
+                            </span>
+                            <div class="d-flex align-items-start justify-content-center gap-2 flex-column text-start">
+                                <span class="small">
+                                    <strong>Check your inbox:</strong> We’ve sent you a secure login link. Your
+                                    workspace will be ready shortly.
+                                </span>
+                                <div style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">Check your inbox
+                                </div>
+                                <div style="font-size:13px;">
+                                    We’ve sent you a secure login link. Your
+                                    workspace will be ready shortly.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-start mb-4 p-3" style="background-color: #f3f4f6; border-radius: 8px;">
+                        <div class="fw-bold small mb-2" style="color: #4b5563;">⚡ What happens next?</div>
+                        <ul class="list-unstyled mb-0" style="font-size: 13px; color: #6b7280;">
+                            <li class="mb-1">✓ Receive secure access via email</li>
+                            <li>✓ Start building and deploying apps</li>
+                        </ul>
+                    </div>
+
+                    <a href="javascript:void(0)" class="btn w-100 py-3 mb-3 text-white fw-bold"
+                        style="background: #4f46e5; border-radius: 8px;" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                        Login to AXI
+                    </a>
+
+                    <p class="mt-2 mb-0 text-muted" style="font-size: 0.8rem;">
+                        Didn't receive the email? Check your spam folder or <a href="#"
+                            style="color:#4f46e5; text-decoration:none;">contact support</a>.
+                    </p>
+
+                    <div class="mt-3 pt-3 border-top text-muted" style="font-size: 0.75rem;">
+                        © AXI Platform • All rights reserved
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="modal fade" id="signupSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+            <div class="modal-content"
+                style="border-radius: 16px; border: none; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.08); background: #fff; font-family: 'Segoe UI', Arial, sans-serif;">
+
+                <div
+                    style="background: linear-gradient(135deg, #4f46e5, #4338ca); color: white; text-align: center; padding: 28px 20px;">
+                    <div style="font-size: 26px; font-weight: 700; letter-spacing: 1px;">AXI</div>
+                    <div style="font-size: 13px; opacity: 0.9; margin-top: 4px;">Cloud Application Platform</div>
+                </div>
+
+                <div class="modal-body" style="padding: 30px; text-align: center; color: #374151;">
+
+                    <h1 style="font-size: 22px; margin-bottom: 8px; font-weight: bold;  color: #374151;">Welcome to AXI
+                    </h1>
+                    <div style="font-size: 14px; color: #6b7280; margin-bottom: 20px;">
+                        Your workspace is being prepared.
+                    </div>
+
+                    <a href="javascript:void(0)"
+                        style="display: inline-block; margin: 18px 0; padding: 14px 26px; background: #4f46e5; color: #fff; text-decoration: none; font-weight: 600; border-radius: 8px; transition: 0.2s;"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Login to AXI
+                    </a>
+
+                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 20px;">
+                        Secure access • No setup required • Ready in seconds
+                    </div>
+
+                    <div
+                        style="text-align: left; background: #f9fafb; border-radius: 10px; padding: 16px; margin-top: 16px; border-left: 4px solid #4f46e5;">
+                        <div class="d-flex align-items-center gap-1"
+                            style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-mail">
+                                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                </svg>
+                            </span>
+                            Check your inbox
+                        </div>
+                        <div style="font-size: 13px;">
+                            We’ve sent you a secure login link.
+                        </div>
+                    </div>
+
+                    <div
+                        style="text-align: left; background: #f9fafb; border-radius: 10px; padding: 16px; margin-top: 16px; border-left: 4px solid #e5e7eb;">
+                        <div class="d-flex align-items-center gap-1"
+                            style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="#4f46e5" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-info-icon lucide-info">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4" />
+                                <path d="M12 8h.01" />
+                            </svg>
+                            What happens next?
+                        </div>
+                        <ul style="margin: 8px 0 0; padding-left: 18px;">
+                            <li style="font-size: 13px; margin-bottom: 6px;">Your workspace will be ready shortly</li>
+                            <li style="font-size: 13px; margin-bottom: 6px;">You’ll receive a secure access link via
+                                email</li>
+                            <li style="font-size: 13px; margin-bottom: 6px;">Start building and deploying your apps on
+                                AXI</li>
+                        </ul>
+                    </div>
+
+                    <div style="font-size: 11px; margin-top: 18px;">
+                        Didn’t receive the email? Check your spam folder or try again.<br />
+                        Need help? <a href="#" style="color:#4f46e5; text-decoration:none;">Contact support</a>
+                    </div>
+
+                    <div style="margin-top:18px; font-size: 13px;">— AXI Platform</div>
+                </div>
+
+                <div style="text-align: center; padding: 18px; font-size: 12px; color: #9ca3af; background: #f9fafb;">
+                    This is an automated message from 
+                    <strong style="color: #6b7280;">AXI Platform</strong><br />
+                    © AXI • All rights reserved
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+    <div class="modal fade" id="setupProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true" style="background-color: #0b1220;">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
+            <div class="modal-content"
+                style="background:#1f2937; color:white; border-radius:12px; border: none; overflow:hidden; font-family: Arial, Helvetica, sans-serif;">
+
+                <div style="padding:18px; text-align:center; background:linear-gradient(135deg,#4f46e5,#4338ca);">
+                    <div style="font-size:20px; font-weight:700; color: white;">AXI</div>
+                    <div style="font-size:12px; opacity:0.85; color: white;">Cloud Application Platform</div>
+                </div>
+
+                <div class="modal-body" style="padding:20px; text-align:center;">
+
+                    <div
+                        style="display:inline-block; background:#1e3a8a; color:#93c5fd; font-size:11px; padding:6px 10px; border-radius:999px; margin-bottom:14px;">
+                        Setting up your workspace...
+                    </div>
+
+                    <h1 style="font-size:18px; margin:8px 0; font-weight: bold; color: white;">We’re preparing things
+                        for you 🚀</h1>
+
+                    <p style="font-size:13px; color:#d1d5db; margin-bottom:16px; line-height:1.5;">
+                        Your workspace for <b>ssrzueset</b> is being configured.
+                        This usually takes a few seconds.
+                    </p>
+
+                    <div style="text-align:left; background:#111827; border-radius:10px; padding:12px; font-size:12px;">
+                        <div style="padding:6px 0; color:#34d399;">✔ Initializing environment</div>
+                        <div style="padding:6px 0; color:#e5e7eb; font-weight:600;">⏳ Configuring services</div>
+                        <div style="padding:6px 0; color:#9ca3af;">• Deploying core modules</div>
+                        <div style="padding:6px 0; color:#9ca3af;">• Finalizing setup</div>
+                    </div>
+
+                    <div style="font-size:12px; color:#9ca3af; margin-top:14px; line-height:1.5;">
+                        You’ll receive a secure access link once everything is ready.
+                        No action needed from your side.
+                    </div>
+                </div>
+
+                <div
+                    style="font-size:11px; color:#9ca3af; text-align:center; padding:14px; border-top:1px solid rgba(255,255,255,0.05);">
+                    This is an automated message from AXI Platform.<br>
+                    Need help? <a href="#" style="color:#4f46e5; text-decoration: none;">Contact support</a><br><br>
+                    © AXI • All rights reserved
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- All JS files -->
+    <script src="assets/js/auth/oauth.js"></script>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/counter.js"></script>
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/ScrollSmoother.min.js"></script>
+    <script src="assets/js/ScrollToPlugin.min.js"></script>
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <script src="assets/js/jquery.meanmenu.min.js"></script>
+    <script src="assets/js/backToTop.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/error-handling.js"></script>
+    <script src="assets/js/offcanvas.js"></script>
+
+    <script src="assets/js/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/jquery.newsTicker.js"></script>
+
+
+
+    <script>
+
+        // testimonial slider
+        if ('.testimonial-slider') {
+            var testimonial_style_3 = new Swiper(".testimonial-slider", {
+                slidesPerView: 2,
+                spaceBetween: 0,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                    // when window width is >= 320px
+                    320: {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+
+                    },
+                    // when window width is >= 480px
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    // when window width is >= 640px
+                    1200: {
+                        slidesPerView: 2,
+                        spaceBetween: 40
+                    },
+                    // when window width is >= 1366px
+                    1366: {
+                        slidesPerView: 2,
+                    },
+                }
+            });
+        }
+
+        // corporate_brand_slider_active
+        if ('.brand-active') {
+            var brand_slider_active = new Swiper(".brand-active", {
+                slidesPerView: 1,
+                loop: true,
+                autoplay: true,
+                spaceBetween: 60,
+                speed: 3000,
+                autoplay: {
+                    delay: .1,
+                    disableOnInteraction: false,
+                },
+                breakpoints: {
+                    // when window width is >= 320px
+                    375: {
+                        slidesPerView: 2,
+                        spaceBetween: 0,
+                    },
+                    // when window width is >= 480px
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                    },
+                    // when window width is >= 640px
+                    900: {
+                        slidesPerView: 4,
+                        spaceBetween: 40
+                    },
+                    // when window width is >= 1366px
+                    1366: {
+                        slidesPerView: 6,
+                    },
+                }
+            });
+        }
+
+        const toggle_switcher = function ($scope) {
+            const checked = $("input", $scope);
+            const toggle_pane = $(".toggle-pane", $scope);
+            const toggle_label = $(".before_label, .after_label", $scope);
+
+            checked.change(function () {
+                toggle_pane.toggleClass('show');
+                toggle_label.toggleClass('active');
+            })
+        }
+    </script>
+    <script>
+        $('a[href*=#]').click(function (e) {
+            var href = $.attr(this, 'href');
+            if (href != "#") {
+                $('html, body').animate({
+                    scrollTop: $(href).offset().top - 81
+                }, 500);
+            }
+            else {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
+            }
+            return false;
+        });
+
+        $(window).on('load', function () {
+            if ($.fn && $.fn.mCustomScrollbar) {
+                $('code.language-javascript').mCustomScrollbar();
+            }
+        });
+
+        var nt_title = $('#nt-title').newsTicker({
+            row_height: 40,
+            max_rows: 1,
+            duration: 3000,
+            pauseOnHover: 0
+        });
+
+        var nt_example2 = $('#newsticker').newsTicker({
+            row_height: 60,
+            max_rows: 1,
+            speed: 300,
+            duration: 6000,
+            prevButton: $('#newsticker-prev'),
+            nextButton: $('#newsticker-next'),
+            hasMoved: function () {
+                $('#newsticker-infos-container').fadeOut(200, function () {
+                    $('#newsticker-infos .infos-hour').text($('#newsticker li:first span').text());
+                    $('#newsticker-infos .infos-text').text($('#newsticker li:first').data('infos'));
+                    $(this).fadeIn(400);
+                });
+            },
+            pause: function () {
+                $('#newsticker li i').removeClass('fa-play').addClass('fa-pause');
+            },
+            unpause: function () {
+                $('#newsticker li i').removeClass('fa-pause').addClass('fa-play');
+            }
+        });
+        $('#newsticker-infos').hover(function () {
+            nt_example2.newsTicker('pause');
+        }, function () {
+            nt_example2.newsTicker('unpause');
+        });
+        var state = 'stopped';
+        var speed;
+        var add;
+
+
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.8.0/build/css/intlTelInput.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.8.0/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.8.0/build/js/utils.js"></script>
+    <script src="assets/js/auth/auth.js"></script>
+
+</body>
+
+</html>

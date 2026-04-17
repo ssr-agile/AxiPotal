@@ -1,0 +1,301 @@
+/* ── Social login buttons ── */
+.social-login-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 14px;
+  color: #e7e7e7;
+  font-size: 13px;
+}
+.social-login-divider span {
+  color: #e7e7e7b0;
+}
+.social-login-divider::before,
+.social-login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #3a3e4f;
+}
+/*
+.social-login-btns {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  border: 1.5px solid #e0e0e0;
+  background: #fff;
+  color: #333; 
+}
+.social-btn:hover {
+  opacity: 0.85;
+}
+.social-btn svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.modal-content-custom {
+  border-radius: 1.5rem;
+  border: none;
+  background: linear-gradient(to bottom right, #ffffff, #f8fdfb);
+}
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  background-color: #e6f4ea; 
+  color: #1e7e34; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+}
+.btn-gradient {
+  background: linear-gradient(45deg, #1e7e34, #28a745);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  color: white;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+} */
+
+/* AUTH MODAL OVERRIDES - DARK DESIGN */
+
+#signupform,
+#staticBackdrop,
+#axiCompanyDetailsModal {
+  background: transparent !important;
+}
+
+#signupform::after,
+#staticBackdrop::after,
+#axiCompanyDetailsModal::after {
+  display: none !important;
+}
+
+/* Dark modal box */
+.register-form-box,
+.login-form-box {
+  background: #1d223b !important;
+  border: 1px solid #32364a !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 20px !important;
+  padding: 36px 40px 44px !important;
+}
+
+/* Text Colors */
+.register-form-box .title,
+.login-form-box .title,
+.register-form-box .title span,
+.login-form-box .title span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+.register-form-box .note p,
+.login-form-box .note p {
+  color: #aaaaaa !important;
+  -webkit-text-fill-color: #aaaaaa !important;
+  background: none !important;
+  text-align: center !important;
+}
+
+/* Subtitle under title */
+.register-form-box .title-wrapper p,
+.login-form-box .title-wrapper p {
+  color: #9a9a9a !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  margin-top: 8px !important;
+  line-height: 1.5 !important;
+}
+
+/* Input Fields - dark style */
+.register-form-box .input-field input,
+.login-form-box .input-field input {
+  border: 1.5px solid #3a3e4f !important;
+  border-radius: 50px !important;
+  background: #252a47 !important;
+  color: #fff !important;
+  height: 52px !important;
+  padding: 0 20px !important;
+  font-size: 15px !important;
+  width: 100% !important;
+}
+
+.register-form-box .input-field input::placeholder,
+.login-form-box .input-field input::placeholder {
+  color: #747474 !important;
+}
+
+.register-form-box .input-field input:focus,
+.login-form-box .input-field input:focus {
+  border-color: #666 !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06) !important;
+  outline: none !important;
+}
+
+/* Primary Button - white */
+.wc-btn-primary {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: none !important;
+  border-radius: 50px !important;
+  padding: 14px 24px !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  width: 100% !important;
+  text-align: center !important;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease !important;
+  box-shadow: none !important;
+}
+
+.wc-btn-primary span {
+  color: #111111 !important;
+}
+
+.wc-btn-primary:hover {
+  background: #f0f0f0 !important;
+  transform: none !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Back button override */
+#axi-login-back {
+  background: #3a3a3a !important;
+  color: #ffffff !important;
+  border-color: #555 !important;
+}
+
+#axi-login-back span {
+  color: #ffffff !important;
+}
+
+/* Social login divider */
+.social-login-divider {
+  margin: 20px 0 16px;
+  color: #3a3e4f !important;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.social-login-divider span {
+  color: #c5c5c5 !important;
+}
+
+.social-login-divider::before,
+.social-login-divider::after {
+  background: #3a3e4f !important;
+}
+
+/* Social buttons - full width with label */
+.social-login-btns {
+  display: flex;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.social-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  padding: 13px 20px !important;
+  border-radius: 50px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background 0.2s !important;
+  color: #ffffff !important;
+  border: 1.5px solid #3a3e4f !important;
+  background: #252a47 !important;
+}
+
+.social-btn:hover {
+  background: #242c59 !important;
+  opacity: 1 !important;
+}
+
+.social-btn svg {
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0 !important;
+}
+
+/* GitHub icon - make white */
+.social-btn svg[fill="#000000"] {
+  fill: #ffffff !important;
+}
+
+/* Close Button */
+.close-btn {
+  border: 1px solid #444444 !important;
+  background: #2d3145 !important;
+  border-radius: 50% !important;
+}
+
+.close-btn img {
+  filter: invert(1) !important;
+}
+
+.close-btn:hover {
+  background: #515777 !important;
+  border-color: #838cbd !important;
+}
+
+/* Note Links */
+.note a {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+}
+
+/* Policy label */
+.policy-field label {
+  color: #8f8f8f !important;
+}
+
+/* Hide decorative elements */
+.gradient-bg,
+.Form-robo,
+.register-form-box .icon,
+.login-form-box .icon {
+  display: none !important;
+}
+
+/* Title wrapper spacing */
+.register-form-box .title-wrapper,
+.login-form-box .title-wrapper {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.register-form-box #axi-mobile {
+  padding-left: 90px !important;
+}
