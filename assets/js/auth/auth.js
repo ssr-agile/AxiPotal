@@ -1,6 +1,6 @@
 // ============================================================
-//  signup.js  –  Signup wizard, Login wizard, ARM API layer
-//  Depends on: auth.js (social providers), intl-tel-input
+//  auth.js  –  Signup wizard, Login wizard, ARM API layer
+//  Depends on: oauth.js (social providers), intl-tel-input
 // ============================================================
 (function () {
   "use strict";
@@ -21,19 +21,21 @@
     state: "",
     country: "",
   };
-
+  window.CONFIG = {};
   async function loadSettings() {
     try {
-      const res = await fetch("appsettings.json");
+      const res = await fetch("axiglobalconfig.json");
       if (!res.ok) return;
-      const d = await res.json();
-      APP.axappurl = d.axappurl || "";
-      APP.axarmurl = d.axarmurl || "";
-      SECRETS.createAccount = d.SECRETS.createAccount;
-      SECRETS.emailCheck = d.SECRETS.emailCheck;
-      SECRETS.accountDetails = d.SECRETS.accountDetails;
-      SECRETS.accountCheck = d.SECRETS.accountCheck;
-      SECRETS.createUser = d.SECRETS.createUser;
+      CONFIG = await res.json();
+      APP.axappurl = CONFIG.AxiPortal.axappurl || "";
+      APP.axarmurl = CONFIG.AxiPortal.axarmurl || "";
+      SECRETS.createAccount = CONFIG.AxiPortal.SECRETS.createAccount;
+      SECRETS.emailCheck = CONFIG.AxiPortal.SECRETS.emailCheck;
+      SECRETS.accountDetails = CONFIG.AxiPortal.SECRETS.accountDetails;
+      SECRETS.accountCheck = CONFIG.AxiPortal.SECRETS.accountCheck;
+      SECRETS.createUser = CONFIG.AxiPortal.SECRETS.createUser;
+
+      window.dispatchEvent(new Event("axi:config-ready"));
 
       const regiondata = await fetch("https://ipapi.co/json/");
       if (!regiondata.ok) return;
@@ -125,7 +127,7 @@
   }
 
   // Domain-specific API calls
-  const api = {
+  window.api = {
     emailCheck: (emailid) =>
       _armSql("AXIEMailCheck", { emailid }, SECRETS.emailCheck),
     accountCheck: (axiaccid) =>
@@ -263,23 +265,6 @@
     mobile: (v) => !v || /^[0-9+\-\s]{7,20}$/.test(v),
   };
 
-  window.validateSocialEmail = async function (user, isLogin) {
-    try {
-      const response = await api.emailCheck(user.email);
-      const rows = response?.["AXI Email Check"]?.rows;
-
-      if (response?.success && rows?.length > 0) {
-        if (!isLogin) {
-          return false;
-        }
-      }
-
-      return true;
-    } catch (error) {
-      console.l;
-    }
-  };
-
   // function generateAxiId(orgName, existingIds = []) {
   //   const cleaned =
   //     (orgName || "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase() || "axixx";
@@ -374,6 +359,15 @@
     return false;
   }
 
+  function _axiEmailExists(resp) {
+    const rows = resp?.["AXI Email Check"]?.rows;
+    return Array.isArray(rows) && rows.length > 0;
+  }
+  function _axiAccountExists(resp) {
+    const rows = resp?.["AXI Account Check"]?.rows;
+    return Array.isArray(rows) && rows.length > 0;
+  }
+
   function _extractRecordId(resp) {
     return (
       (String(resp?.result || "").match(/recordid\s*=\s*(\d+)/i) || [])[1] ||
@@ -442,12 +436,13 @@
      6. SUCCESS & WAIT
   ═══════════════════════════════════════════════════════════ */
   function triggerSignupSuccessPopup() {
+    window.ui.hideModal("axiCompanyDetailsModal");
     window.ui.showModal("setupProgressModal");
   }
   /* ═══════════════════════════════════════════════════════════
      6. REDIRECT & SUCCESS
   ═══════════════════════════════════════════════════════════ */
-  function triggerSuccessRedirect(msg, axiaccid) {
+  window.triggerSuccessRedirect = (msg, axiaccid) => {
     const msgEl = document.getElementById("redirectModalMessage");
     if (msgEl) msgEl.innerText = msg;
     window.ui.showModal("redirectModal");
@@ -456,7 +451,7 @@
       url += url.includes("?") ? "&" : "?";
       window.location.href = url + axiaccid;
     }, 2000);
-  }
+  };
 
   /* ═══════════════════════════════════════════════════════════
      7. SIGNUP WIZARD
@@ -609,35 +604,17 @@
             true,
             "Checking email…",
           );
-
           const resp = await api.emailCheck(email);
-
-          // {"success":true,"AXI Email Check":{"success":true,"fields":[{"name":"emailid","datatype":"string"}],"rows":[{"emailid":"arjun.s@agile-labs.com"}]}}
-
-          if (resp?.success === true && resp?.["AXI Email Check"]) {
-            const axiEmailCheckObj = resp?.["AXI Email Check"];
-
-            if (
-              axiEmailCheckObj?.fields?.[0]?.name === "emailid" &&
-              axiEmailCheckObj?.rows?.[0]?.emailid.toLowerCase() ===
-                email.toLowerCase()
-            ) {
-              window.ui.showErr(
-                signupErrEl,
-                "This email is already registered. Please log in.",
-              );
-              return;
-            } else {
-              window.openCompanyDetailsModal();
-            }
-          }
-        } catch (err) {
-          if (err.code === "DUP_EMAIL")
+          if (_axiEmailExists(resp)) {
             window.ui.showErr(
               signupErrEl,
               "This email is already registered. Please log in.",
             );
-          else window.ui.showErr(signupErrEl, _friendlyError(err));
+            return;
+          }
+          window.openCompanyDetailsModal();
+        } catch (err) {
+          window.ui.showErr(signupErrEl, _friendlyError(err));
         } finally {
           window.ui.setLoading(
             signupModalEl,
@@ -647,7 +624,6 @@
           );
         }
       });
-
     // ── Auto-generate AXI ID when org name is typed ───────
     orgNameInput?.addEventListener("blur", async () => {
       if (accountIdInput && !accountIdInput._manualEdit)
@@ -693,47 +669,39 @@
     //     accountIdInput._manualEdit = accountIdInput.value.length > 0;
     // });
     regenerateBtn?.addEventListener("click", async () => {
-      if (accountIdInput) {
-        try {
-          window.ui.setLoading(
-            companyModalEl,
-            "axi-companydetails-loader",
-            "axi-companydetails-loader-text",
-            true,
-            "Validating AXI ID...",
-          );
-          accountIdInput._manualEdit = false;
-          checkIdBtn.classList.add("d-none");
-          accountIdInput.value = generateAxiId(
-            orgNameInput?.value.trim() || "",
-          );
-          const response = await api.accountCheck(accountIdInput?.value);
-          const rows = response?.["AXI Account Check"]?.rows;
-          const fields = response?.["AXI Account Check"]?.fields;
-          if (
-            response?.success === true &&
-            fields !== null > 0 &&
-            rows?.length > 0
-          ) {
-            window.ui.showErr(
-              companyAccountErrEl,
-              "Axi Account Id Already Exists Please regenerate a New AxiAccountId",
-            );
-          }
-        } catch (err) {
-          console.log(err?.message);
-          ui.showErr(
+      if (!accountIdInput) return;
+      try {
+        window.ui.setLoading(
+          companyModalEl,
+          "axi-companydetails-loader",
+          "axi-companydetails-loader-text",
+          true,
+          "Validating AXI ID...",
+        );
+        window.ui.clearErr(companyAccountErrEl); // ← clear previous error
+        accountIdInput._manualEdit = false;
+        checkIdBtn.classList.add("d-none");
+        accountIdInput.value = generateAxiId(orgNameInput?.value.trim() || "");
+        const response = await api.accountCheck(accountIdInput.value);
+        if (_axiAccountExists(response)) {
+          window.ui.showErr(
             companyAccountErrEl,
-            "Unable to generate a unique Axi Account Id. Please try entering a new one",
-          );
-        } finally {
-          window.ui.setLoading(
-            companyModalEl,
-            "axi-companydetails-loader",
-            "axi-companydetails-loader-text",
-            false,
+            "AXI Account ID already taken. Please regenerate.",
           );
         }
+      } catch (err) {
+        console.error(err);
+        ui.showErr(
+          companyAccountErrEl,
+          "Unable to generate a unique AXI Account ID. Try again.",
+        );
+      } finally {
+        window.ui.setLoading(
+          companyModalEl,
+          "axi-companydetails-loader",
+          "axi-companydetails-loader-text",
+          false,
+        );
       }
     });
 
@@ -747,6 +715,7 @@
           true,
           "Validating AXI ID...",
         );
+        window.ui.clearErr(companyAccountErrEl);
         const currentAccId = accountIdInput.value.trim();
 
         if (!currentAccId) {
@@ -755,13 +724,7 @@
 
         try {
           const response = await api.accountCheck(currentAccId);
-          const rows = response?.["AXI Account Check"]?.rows;
-          const fields = response?.["AXI Account Check"]?.fields;
-          if (
-            response?.success === true &&
-            fields !== null > 0 &&
-            rows?.length > 0
-          ) {
+          if (_axiAccountExists(response)) {
             window.ui.showErr(
               companyAccountErrEl,
               "Axi Account Id Already Exists Please enter a new AxiAccountId",
@@ -834,7 +797,7 @@
       const payload = {
         email,
         orgname,
-        axiaccid,
+        axiaccid: axiaccid?.toLowerCase() || "",
         country: countryInput?.value.trim() || "",
         state: stateInput?.value.trim() || "",
         addr: addressInput?.value.trim() || "",
@@ -881,11 +844,12 @@
         );
 
         const userPayload = {
-          UserName: profile?.name || profile?.fullName || email,
+          // UserName: profile?.name || profile?.fullName || email,
+          UserName: email,
           EmailId: email,
           OrgName: orgname,
           Region: Region.country,
-          IsActive: "True",
+          IsActive: "T",
           IsVerified: profile?.isEmailVerified == true ? "True" : "False",
           AuthProvider: profile?.provider || "Credential",
           SSOId: profile?.sub || "",
@@ -893,8 +857,8 @@
           PasswordHash: "",
           PasswordSalt: "",
           IsPrimary: "True",
-          AppName: axiaccid,
-          SchemaName: axiaccid,
+          AppName: axiaccid?.toLowerCase() || "",
+          SchemaName: axiaccid?.toLowerCase() || "",
           Role: "OWNER",
           MaxUsers: 2,
           ExpiryDays: 15,
@@ -907,18 +871,19 @@
         // triggerSuccessFlow("Account created successfully!", axiaccid);
         triggerSignupSuccessPopup();
       } catch (err) {
-        window.ui.setLoading(
-          companyModalEl,
-          "axi-companydetails-loader",
-          "axi-companydetails-loader-text",
-          false,
-        );
         if (err.code === "DUP_ID")
           window.ui.showErr(
             companyErrEl,
             "This AXI Account ID is already taken. Click Regenerate.",
           );
         else window.ui.showErr(companyErrEl, _friendlyError(err));
+      } finally {
+        window.ui.setLoading(
+          companyModalEl,
+          "axi-companydetails-loader",
+          "axi-companydetails-loader-text",
+          false,
+        );
       }
     });
   }
@@ -982,6 +947,7 @@
       }
 
       continueBtn.disabled = true;
+      // Inside continueBtn click handler, replace the try block:
       try {
         window.ui.setLoading(
           loginModalEl,
@@ -991,32 +957,14 @@
           "Checking email…",
         );
         const resp = await api.emailCheck(email);
-        // if (!_rowExists(resp)) {
-        //   window.ui.showErr(
-        //     loginErrEl,
-        //     "AXI Account ID not found. Please sign up first.",
-        //   );
-        // }
-        if (resp?.success === true && resp?.["AXI Email Check"]) {
-          const axiEmailCheckObj = resp?.["AXI Email Check"];
-
-          if (axiEmailCheckObj?.fields === null || !axiEmailCheckObj?.fields) {
-            window.ui.showErr(
-              loginErrEl,
-              "AXI Account not found. Please sign up first.",
-            );
-            return;
-          } else {
-            // showStep(2);
-            triggerSuccessRedirect("successfully Logged in.");
-          }
-        } else {
-          // showStep(2);
+        if (!_axiEmailExists(resp)) {
           window.ui.showErr(
             loginErrEl,
-            "AXI Account not found. Please sign up first.",
+            "No account found with this email. Please sign up first.",
           );
+          return;
         }
+        triggerSuccessRedirect("Login successful.", "");
       } catch (err) {
         window.ui.showErr(loginErrEl, _friendlyError(err));
       } finally {
@@ -1085,5 +1033,5 @@
     checkUrlIntent(); // ← add this
   });
 
-  // triggerSignupSuccessPopup();
+  triggerSignupSuccessPopup();
 })();

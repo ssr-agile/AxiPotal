@@ -3,22 +3,25 @@
 //  Edit AXI_CONFIG to configure each provider.
 // ============================================================
 
+// (function () {
 const AXI_CONFIG = {
-  google: {
-    clientId:
-      "130828479208-e57k5lnicfu4h2hcbeqva5vs733j4t0e.apps.googleusercontent.com",
-  },
-  microsoft: {
-    clientId: "5bc83ad8-59f6-4e6b-aa42-069b6c44c79f",
-    tenantId: "0b1513a2-8f4d-4478-ab27-28da7a534984",
-  },
-  supabase: {
-    url: "https://cictsmygarchinmbajmf.supabase.co",
-    publicKey: "sb_publishable_vj0-UPrA4Zq_nhKw1bDfTA_7tjemf0N",
-  },
+  google: {},
+  microsoft: {},
+  supabase: {},
 };
 
-const signupModalEl = document.getElementById("signupform");
+var signupModalEl;
+
+async function loadSettings() {
+  try {
+    if (!window.CONFIG) return;
+    AXI_CONFIG.google = CONFIG.AxiPortal.OAuth.google;
+    AXI_CONFIG.microsoft = CONFIG.AxiPortal.OAuth.microsoft;
+    AXI_CONFIG.supabase = CONFIG.AxiPortal.OAuth.supabase;
+  } catch (e) {
+    console.warn("appsettings.json not found (OAuth):", e);
+  }
+}
 
 // ── Supabase lazy init ──────────────────────────────────────
 let _sb = null;
@@ -32,22 +35,21 @@ function getSupabase() {
 }
 
 // ── Social router  (add new providers here) ─────────────────
-let isLogin = false;
-function axiSocialLogin(provider) {
+function axiSocialLogin(provider, authMode) {
+  const isLogin = authMode === "login";
   const handlers = {
-    google: _googleLogin,
-    microsoft: _msLogin,
-    github: _githubLogin,
-    linkedin: _linkedinLogin,
+    google: () => _googleLogin(isLogin),
+    microsoft: () => _msLogin(isLogin),
+    github: () => _githubLogin(isLogin),
+    linkedin: () => _linkedinLogin(isLogin),
   };
-  // isLogin = authMode == "login";
   const fn = handlers[provider];
   if (fn) fn();
   else axiToast("Unknown provider: " + provider);
 }
 
 // ── Google ──────────────────────────────────────────────────
-function _googleLogin() {
+function _googleLogin(isLogin) {
   if (!window.google?.accounts)
     return axiToast("Google Sign-In not ready. Please refresh.");
 
@@ -62,9 +64,7 @@ function _googleLogin() {
             "https://www.googleapis.com/oauth2/v3/userinfo",
             { headers: { Authorization: "Bearer " + access_token } },
           ).then((r) => r.json());
-          console.log("from google:");
-          console.log(info);
-          axiHandleSocialUser(
+          await axiHandleSocialUser(
             {
               name: info.name,
               email: info.email,
@@ -73,6 +73,7 @@ function _googleLogin() {
               sub: info.sub,
             },
             "google",
+            isLogin,
           );
         } catch {
           axiToast("Could not fetch Google profile. Try again.");
@@ -103,16 +104,14 @@ async function _getMsal() {
   await _msal.initialize();
   return _msal;
 }
-async function _msLogin() {
+async function _msLogin(isLogin) {
   const inst = await _getMsal();
   if (!inst) return;
   try {
     const res = await inst.loginPopup({
       scopes: ["openid", "email", "profile", "User.Read"],
     });
-    console.log("from ms:");
-    console.log(res);
-    axiHandleSocialUser(
+    await axiHandleSocialUser(
       {
         name: res.account.name,
         email: res.account.username,
@@ -120,6 +119,7 @@ async function _msLogin() {
         sub: res.account?.idTokenClaims?.sub,
       },
       "microsoft",
+      isLogin,
     );
   } catch (e) {
     console.error("[MSAL]", e);
@@ -127,15 +127,17 @@ async function _msLogin() {
 }
 
 // ── GitHub & LinkedIn (Supabase OAuth) ──────────────────────
-async function _githubLogin() {
-  await _supabaseOAuth("github");
+async function _githubLogin(isLogin) {
+  await _supabaseOAuth("github", isLogin);
 }
-async function _linkedinLogin() {
-  await _supabaseOAuth("linkedin_oidc");
+async function _linkedinLogin(isLogin) {
+  await _supabaseOAuth("linkedin_oidc", isLogin);
 }
 
-async function _supabaseOAuth(provider) {
+async function _supabaseOAuth(provider, isLogin) {
   const sb = getSupabase();
+  // Store isLogin so the auth state listener can use it after redirect
+  sessionStorage.setItem("axi_oauth_mode", isLogin ? "login" : "signup");
   const { error } = await sb.auth.signInWithOAuth({
     provider,
     options: { redirectTo: window.location.origin + "/" },
@@ -148,27 +150,33 @@ async function _supabaseOAuth(provider) {
 
 // ── Supabase auth state listener (handles OAuth redirect) ────
 function _initSupabaseListener() {
+  signupModalEl = document.getElementById("signupform");
   const sb = getSupabase();
   if (!sb) return;
   sb.auth.onAuthStateChange((event, session) => {
-    if (session?.user && !sessionStorage.getItem("axi_social_user")) {
+    if (
+      event === "SIGNED_IN" &&
+      session?.user &&
+      !sessionStorage.getItem("axi_social_user")
+    ) {
       const u = session.user;
-      console.log("from sb:");
-      console.log(session);
+      const isLogin = sessionStorage.getItem("axi_oauth_mode") === "login";
+      sessionStorage.removeItem("axi_oauth_mode");
       axiHandleSocialUser(
         {
           name:
             u.user_metadata.given_name ||
             u.user_metadata.user_name ||
             u.user_metadata.full_name ||
-            "User0",
+            "User",
           fullName: u.user_metadata.name || "",
           email: u.email,
-          isEmailVerified: u.user_metadata.email_verified,
+          isEmailVerified: !!u.email_confirmed_at,
           accessToken: session.access_token,
           sub: u.user_metadata.sub,
         },
         u.app_metadata.provider || "supabase-oauth",
+        isLogin,
       );
       if (window.history.replaceState)
         window.history.replaceState(null, null, window.location.pathname);
@@ -178,50 +186,64 @@ function _initSupabaseListener() {
 window.addEventListener("load", _initSupabaseListener);
 
 // ── After any successful social auth ────────────────────────
-//    Saves the user and hands off to the signup wizard (signup.js)
-async function axiHandleSocialUser(user, provider) {
+//    Saves the user and hands off to the signup wizard (auth.js)
+const _SUPABASE_PROVIDERS = new Set([
+  "github",
+  "linkedin_oidc",
+  "supabase-oauth",
+]);
+
+async function _clearProviderSession(provider) {
   try {
-    window.ui.setLoading(
-      signupModalEl,
-      "axi-signup-loader",
-      "axi-signup-loader-text",
-      true,
-      "Checking email…",
-    );
+    if (_SUPABASE_PROVIDERS.has(provider)) {
+      await getSupabase()?.auth.signOut();
+    } else {
+      // Google / Microsoft — clear MSAL cache and session tokens
+      sessionStorage.clear();
+    }
+  } catch (e) {
+    console.warn("Session clear failed:", e);
+  }
+}
 
-    const validateEmail = await validateSocialEmail(user, isLogin);
-
-    if (!validateEmail) {
-      if (
-        provider === "supabase-oath" ||
-        provider === "github" ||
-        provider === "linkedin_oidc"
-      ) {
-        const sb = getSupabase();
-        await sb.auth.signOut();
-      }
-
-      if ((provider === "microsoft" && _msal) || provider === "google") {
-        sessionStorage.clear();
-      }
-
-      axiToast("Email Already Exists Please Login using Axi Account Id ");
+async function axiHandleSocialUser(user, provider, isLogin) {
+  window.ui.setLoading(
+    signupModalEl,
+    "axi-signup-loader",
+    "axi-signup-loader-text",
+    true,
+    "Checking email…",
+  );
+  try {
+    const isValid = await _validateSocialEmail(user.email, isLogin);
+    if (!isValid) {
+      await _clearProviderSession(provider);
+      axiToast(
+        isLogin
+          ? "No account found with this email. Please sign up first."
+          : "This email is already registered. Please log in instead.",
+      );
       return;
     }
+
     sessionStorage.setItem(
       "axi_social_user",
       JSON.stringify({ ...user, provider }),
     );
-    // openCompanyDetailsModal is exposed globally by signup.js
-    setTimeout(
-      () =>
-        typeof openCompanyDetailsModal === "function" &&
-        openCompanyDetailsModal(),
-      400,
-    );
+
+    if (isLogin) {
+      window.triggerSuccessRedirect("Login successful", "");
+    } else {
+      setTimeout(
+        () =>
+          typeof openCompanyDetailsModal === "function" &&
+          openCompanyDetailsModal(),
+        400,
+      );
+    }
   } catch (err) {
-    axiToast("Something went wrong, please try again later");
-    console.log(err?.message);
+    console.error("[axiHandleSocialUser]", err);
+    axiToast("Something went wrong. Please try again.");
   } finally {
     window.ui.setLoading(
       signupModalEl,
@@ -262,3 +284,13 @@ function axiToast(msg) {
   clearTimeout(el._t);
   el._t = setTimeout(() => (el.style.display = "none"), 5500);
 }
+
+async function _validateSocialEmail(email, isLogin) {
+  const response = await window.api.emailCheck(email);
+  const rows = response?.["AXI Email Check"]?.rows;
+  const emailExists = Array.isArray(rows) && rows.length > 0;
+  // Signup: email must NOT exist. Login: email MUST exist.
+  return isLogin ? emailExists : !emailExists;
+}
+
+window.addEventListener("axi:config-ready", loadSettings);

@@ -1173,7 +1173,7 @@
                         <div class="form-wrapper">
                             <!-- Social login -->
                             <div class="social-login-btns">
-                                <button type="button" class="social-btn" onclick="axiSocialLogin('google')">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('google', 'login')">
                                     <svg viewBox="0 0 48 48">
                                         <path fill="#EA4335"
                                             d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.8 2.5 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.3 13 17.7 9.5 24 9.5z" />
@@ -1186,7 +1186,7 @@
                                     </svg>
                                     Continue with Google
                                 </button>
-                                <button type="button" class="social-btn" onclick="axiSocialLogin('microsoft')">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('microsoft', 'login')">
                                     <svg viewBox="0 0 21 21">
                                         <rect x="0" y="0" width="10" height="10" fill="#F25022" />
                                         <rect x="11" y="0" width="10" height="10" fill="#7FBA00" />
@@ -1202,7 +1202,7 @@
                                     </svg>
                                     Continue with LinkedIn
                                 </button> -->
-                                <button type="button" class="social-btn" onclick="axiSocialLogin('github')">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('github', 'login')">
                                     <svg fill="#000000" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -1327,7 +1327,7 @@
                             <!-- AXI account registration popup -->
                             <!-- Social login -->
                             <div class="social-login-btns">
-                                <button type="button" class="social-btn" onclick="axiSocialLogin('google')">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('google', 'signup')">
                                     <svg viewBox="0 0 48 48">
                                         <path fill="#EA4335"
                                             d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.8 2.5 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.3 13 17.7 9.5 24 9.5z" />
@@ -1340,7 +1340,8 @@
                                     </svg>
                                     Continue with Google
                                 </button>
-                                <button type="button" class="social-btn" onclick="axiSocialLogin('microsoft')">
+                                <button type="button" class="social-btn"
+                                    onclick="axiSocialLogin('microsoft', 'signup')">
                                     <svg viewBox="0 0 21 21">
                                         <rect x="0" y="0" width="10" height="10" fill="#F25022" />
                                         <rect x="11" y="0" width="10" height="10" fill="#7FBA00" />
@@ -1356,7 +1357,7 @@
                                     </svg>
                                     Continue with LinkedIn
                                 </button> -->
-                                <button type="button" class="social-btn" onclick="axiSocialLogin('github')">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('github', 'signup')">
                                     <svg fill="#000000" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -1433,7 +1434,8 @@
             <div id="axi-companydetails-loader-text" class="mt-2 small">Please wait…</div>
         </div>
 
-        <div class="modal-dialog modal-dialog-centered modal-lg" style="overflow-y: scroll; overflow-x: visible;">
+        <!-- <div class="modal-dialog modal-dialog-centered modal-lg" style="overflow-y: scroll; overflow-x: visible;"> -->
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="gradient-bg">
                     <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
@@ -1578,7 +1580,7 @@
     </div>
 
     <!-- Success pop up -->
-    <div class="modal fade" id="redirectModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="false"
+    <div class="modal fade" id="redirectModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <div class="modal-dialog modal-sm modal-dialog-centered custom-modal-size">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
@@ -1820,14 +1822,18 @@
         </div>
     </div> -->
     <div class="modal fade" id="setupProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-hidden="true" style="background-color: #0b1220;">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
+        aria-hidden="true" style="background: none;">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 480px; max-height: 80vh; background: none;">
             <div class="modal-content"
                 style="background:#1f2937; color:white; border-radius:12px; border: none; overflow:hidden; font-family: Arial, Helvetica, sans-serif;">
-
                 <div style="padding:18px; text-align:center; background:linear-gradient(135deg,#4f46e5,#4338ca);">
                     <div style="font-size:20px; font-weight:700; color: white;">AXI</div>
                     <div style="font-size:12px; opacity:0.85; color: white;">Cloud Application Platform</div>
+                    <!-- <div class="btn-wrapper">
+                        <button class="close-btn" data-bs-dismiss="modal">
+                            <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                        </button>
+                    </div> -->
                 </div>
 
                 <div class="modal-body" style="padding:20px; text-align:center;">

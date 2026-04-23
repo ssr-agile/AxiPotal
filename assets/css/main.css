@@ -11972,7 +11972,7 @@ section {
   background: #373c52 !important;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: #1d223b !important;
-  padding: 40px 80px 40px !important;
+  padding: 35px 60px 35px !important;
 }
 .register-form-box h2.title span {
   color: white !important;
@@ -12098,7 +12098,7 @@ section {
 #axi-company-form {
   display: grid !important; /* Overriding 'inherit' to ensure grid behavior */
   grid-template-columns: repeat(12, 1fr); /* Creates 12 equal columns */
-  gap: 12px 12px; /* Vertical and Horizontal spacing */
+  gap: 5px 12px; /* Vertical and Horizontal spacing */
   align-items: start;
 }
 
@@ -12259,7 +12259,7 @@ section {
 }
 
 #axiCompanyDetailsModal .register-form-box {
-  width: 805px;
+  width: 500px;
 }
 #axiCompanyDetailsModal .form-wrapper {
   margin-bottom: 25px;

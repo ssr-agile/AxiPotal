@@ -297,5 +297,44 @@
 }
 
 .register-form-box #axi-mobile {
-  padding-left: 90px !important;
+  padding-left: 130px !important;
+}
+
+/* ── Company Details Modal (Step 2) fixes ── */
+
+/* Match Step 1 size — make modal content scrollable without visible scrollbar */
+#axiCompanyDetailsModal .modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+#axiCompanyDetailsModal .modal-content::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Compact input height so all fields fit without overflow */
+#axiCompanyDetailsModal .register-form-box .input-field input {
+  height: 40px !important;
+  font-size: 13px !important;
+  padding: 0 16px !important;
+}
+
+/* Tighten spacing between fields */
+#axiCompanyDetailsModal .input-field {
+  margin-bottom: 7px !important;
+}
+
+/* Error alert — prevent wrapping, keep it on one clean block */
+#axi-company-error {
+  font-size: 12.5px !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  white-space: normal !important;
+  /* word-break: break-word !important; */
+  text-wrap-mode: nowrap;
+  line-height: 1.4 !important;
+  margin-bottom: 12px !important;
+  /* width: max-content; */
+  grid-column: 1/13;
 }
