@@ -1,0 +1,81 @@
+{
+  "AxiGlobal": "true",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=axidb;Username=axiadmin;Password=log;Pooling=false;"
+  },
+  "AxiClientAPI": "http://localhost/AxiClient",
+  "AxiPortal": {
+    "axappurl": "http://localhost/AxpertWebWithAxi/aspx/signin.aspx",
+    "axarmurl": "http://localhost:90/ARM_APIs/api/v1",
+    "SECRETS": {
+      "createAccount": "7360194662342460",
+      "emailCheck": "7507188524050530",
+      "accountDetails": "4852775002923580",
+      "accountCheck": "2000970407932250",
+      "createUser": "1221331625443170"
+    },
+    "OAuth": {
+      "google": {
+        "clientId": "130828479208-e57k5lnicfu4h2hcbeqva5vs733j4t0e.apps.googleusercontent.com"
+      },
+      "microsoft": {
+        "clientId": "5bc83ad8-59f6-4e6b-aa42-069b6c44c79f",
+        "tenantId": "0b1513a2-8f4d-4478-ab27-28da7a534984"
+      },
+      "supabase": {
+        "url": "https://cictsmygarchinmbajmf.supabase.co",
+        "publicKey": "sb_publishable_vj0-UPrA4Zq_nhKw1bDfTA_7tjemf0N"
+      }
+    }
+  },
+  "RabbitMq": {
+    "Host": "localhost",
+    "Port": 5672,
+    "Username": "guest",
+    "Password": "guest",
+    "VirtualHost": "/",
+    "QueueName": "axiadminqueue",
+    "PrefetchCount": 1,
+    "RetryIntervalSeconds": 5,
+    "MaxRetryAttempts": 5
+  },
+  "Database": {
+    "Host": "localhost",
+    "Port": 5432,
+    "Username": "postgres",
+    "Password": "log",
+    "AdminDatabase": "postgres",
+    "SqlDumpPath": "SqlDumps/axiadmin_dump.sql",
+    "TemplateDatabaseName": "axi_goldendb;",
+    "TemplateSchemaName": "axigolden;",
+    "AxiAdminName": "axiadmin",
+    "DefaultRolePassword": "log",
+    "AppDomain": "http://localhost:5000/",
+    "LicenseApiUrl": "http://localhost/AxiClientAPI/api/AxiClient/AxiPrimaryUser"
+  },
+  "Smtp": {
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "Username": "ssrssr0095@gmail.com",
+    "Password": "lhpt lnre qkby vvjt",
+    "FromEmail": "ssrssr0095@gmail.com",
+    "FromName": "AXI System",
+    "EnableSsl": true
+  },
+  "Logging": {
+    "EnableDebug": true,
+    "LogDirectory": "Logs",
+    "LogFilePrefix": "rmq-consumer",
+    "RollingInterval": "Day",
+    "RetainedFileCount": 30,
+    "FileSizeLimitMB": 10
+  },
+  "AppConnection": {
+    "AxpertWebScriptsPath": "E:\\Axpert\\AxpertWebScripts",
+    "ARMWebScriptsPath": "E:\\Axpert\\ArmWebScripts",
+    "ARMAPIPath": "E:\\Axpert\\ARMAPI",
+    "BackupFolderName": "axconnections",
+    "AppLoginUrl": "http://localhost/AxpertWebWithAxi/aspx/signin.aspx?",
+    "SupportUrl": "support@axi-agile.com"
+  }
+}
