@@ -8,7 +8,7 @@
   /* ═══════════════════════════════════════════════════════════
      1. SETTINGS  –  loaded from appsettings.json at boot
   ═══════════════════════════════════════════════════════════ */
-  const APP = { axappurl: "", axarmurl: "" };
+  const APP = { axappurl: "", axarmurl: "", AxiClientAPI: "" };
   const SECRETS = {
     createAccount: "",
     emailCheck: "",
@@ -29,6 +29,7 @@
       CONFIG = await res.json();
       APP.axappurl = CONFIG.AxiPortal.axappurl || "";
       APP.axarmurl = CONFIG.AxiPortal.axarmurl || "";
+      APP.AxiClientAPI = CONFIG.AxiClientAPI || ""; 
       SECRETS.createAccount = CONFIG.AxiPortal.SECRETS.createAccount;
       SECRETS.emailCheck = CONFIG.AxiPortal.SECRETS.emailCheck;
       SECRETS.accountDetails = CONFIG.AxiPortal.SECRETS.accountDetails;
@@ -57,6 +58,13 @@
     const base = APP.axarmurl || "";
     return base.replace(/\/$/, "") + "/" + path;
   }
+
+  function axiClientApiUrl(path) {
+    const base = APP.AxiClientAPI || "";
+    return base.replace(/\/$/, "") + "/" + path;
+  }
+
+
 
   // Encrypted-key cache (one encrypt call per raw secret per session)
   const _encCache = new Map();
@@ -128,6 +136,15 @@
 
   // Domain-specific API calls
   window.api = {
+    axiUserValidate: (emailId) => {
+      const axiUserValidateUrl = axiClientApiUrl("AxiUserValidate"); 
+      console.log(axiUserValidateUrl); 
+        return _post(axiUserValidateUrl, {
+            userName: emailId
+      });
+
+
+    },
     emailCheck: (emailid) =>
       _armSql("AXIEMailCheck", { emailid }, SECRETS.emailCheck),
     accountCheck: (axiaccid) =>
@@ -1033,5 +1050,5 @@
     checkUrlIntent(); // ← add this
   });
 
-  triggerSignupSuccessPopup();
+  // triggerSignupSuccessPopup();
 })();
