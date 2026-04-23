@@ -1281,6 +1281,54 @@
         </div>
     </div>
 
+    <div class="modal fade" id="axiSchemaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="gradient-bg">
+        <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+    </div>
+    
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="gradient-bg">
+                <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+            </div>
+            
+            <div class="form-box-wrapper box-anim">
+                <div class="register-form-box" style="width: 100%; max-width: 550px; margin: 0 auto;">
+                    
+                    <div class="btn-wrapper">
+                        <button class="close-btn" data-bs-dismiss="modal">
+                            <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                        </button>
+                    </div>
+                    
+                    <div class="title-wrapper">
+                        <img src="assets/imgs/logo/axi-logo-color.svg" alt="Axpert AI" class="form-logo">
+                        <h2 class="title">Select Schema</h2>
+                    </div>
+
+                    <div class="form-wrapper flex-grow-1 d-flex flex-column justify-content-center">
+                        <p class="mb-4" style="color: var(--white-2); font-size: 16px;">Multiple accounts found. Please select one to continue:</p>
+
+                        <form id="axi-schema-form" class="user-form" novalidate onsubmit="event.preventDefault();">
+                            <div class="input-field field-full-width mb-4">
+                                <select id="axi-schema-select" class="axi-custom-select" required>
+                                    </select>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-3">
+                                <button type="button" id="axi-schema-continue-btn" class="subscribe-btn wc-btn-primary btn-text-flip large w-100">
+                                    <span data-text="Continue">Continue</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- signup form  -->
     <div class="modal fade" id="signupform" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-hidden="true">

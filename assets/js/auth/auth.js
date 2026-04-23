@@ -29,7 +29,7 @@
       CONFIG = await res.json();
       APP.axappurl = CONFIG.AxiPortal.axappurl || "";
       APP.axarmurl = CONFIG.AxiPortal.axarmurl || "";
-      APP.AxiClientAPI = CONFIG.AxiClientAPI || ""; 
+      APP.AxiClientAPI = CONFIG.AxiClientAPI || "";
       SECRETS.createAccount = CONFIG.AxiPortal.SECRETS.createAccount;
       SECRETS.emailCheck = CONFIG.AxiPortal.SECRETS.emailCheck;
       SECRETS.accountDetails = CONFIG.AxiPortal.SECRETS.accountDetails;
@@ -137,10 +137,10 @@
   // Domain-specific API calls
   window.api = {
     axiUserValidate: (emailId) => {
-      const axiUserValidateUrl = axiClientApiUrl("AxiUserValidate"); 
-      console.log(axiUserValidateUrl); 
-        return _post(axiUserValidateUrl, {
-            userName: emailId
+      const axiUserValidateUrl = axiClientApiUrl("api/AxiClient/AxiUserValidate");
+      console.log(axiUserValidateUrl);
+      return _post(axiUserValidateUrl, {
+        userName: emailId
       });
 
 
@@ -253,7 +253,7 @@
   function _store(key, val) {
     try {
       localStorage.setItem(key, JSON.stringify(val));
-    } catch {}
+    } catch { }
   }
   function _load(key, fallback) {
     try {
@@ -517,7 +517,7 @@
         try {
           if (countryInput)
             countryInput.value = iti.getSelectedCountryData()?.name || "";
-        } catch {}
+        } catch { }
       };
       mobileInput.addEventListener("countrychange", () => {
         mobileInput.value = "";
@@ -973,15 +973,44 @@
           true,
           "Checking email…",
         );
-        const resp = await api.emailCheck(email);
-        if (!_axiEmailExists(resp)) {
-          window.ui.showErr(
-            loginErrEl,
-            "No account found with this email. Please sign up first.",
-          );
-          return;
-        }
-        triggerSuccessRedirect("Login successful.", "");
+        // const emailCheckResp = await api.emailCheck(email);
+        // if (!_axiEmailExists(emailCheckResp)) {
+        //   window.ui.showErr(
+        //     loginErrEl,
+        //     "No account found with this email. Please sign up first.",
+        //   );
+
+        // }
+
+
+          const response = await api.axiUserValidate(email);
+
+          if (!response || !response.Success) {
+            window.ui.showErr(loginErrEl, "Error: " + response?.message);
+            return;
+          }
+
+          let schemas = [];
+
+          schemas = JSON.parse(response.JSON || []);
+
+          if (schemas.length === 0) {
+            window.ui.showErr(loginErrEl, "No Schemas found for username: " + email);
+            return;
+          }
+
+          // if (schemas.length === 1) {
+          //   window.ui.hideMo
+          // }
+
+          window.ui.hideModal("staticBackdrop")
+
+          renderSchemaSelection(schemas);
+          window.ui.showModal("axiSchemaModal");
+
+
+
+        // triggerSuccessRedirect("Login successful.", "");
       } catch (err) {
         window.ui.showErr(loginErrEl, _friendlyError(err));
       } finally {
@@ -1051,4 +1080,63 @@
   });
 
   // triggerSignupSuccessPopup();
+
+  function renderSchemaSelection(schemas) {
+    const selectElement = document.getElementById("axi-schema-select");
+
+    if (!selectElement) {
+      console.error("Missing #axi-schema-select in the DOM.");
+      return;
+    }
+
+    selectElement.innerHTML = "";
+
+    const defaultOption = document.createElement("option");
+
+    defaultOption.value = "";
+    defaultOption.text = "Select a Schema...";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    selectElement.appendChild(defaultOption);
+
+    schemas.forEach(schema => {
+      const isValid = schema.status === "Valid";
+      const option = document.createElement("option");
+
+      option.value = schema.schemaname;
+      option.text = `${schema.appname}`;
+
+      option.dataset.appname = schema.appname;
+
+      if (!isValid) {
+        option.disabled = true;
+        option.text += "- Invalid"
+      }
+
+      selectElement.appendChild(option);
+    });
+  }
+
+  const schemaContinueBtn = document.getElementById("axi-schema-continue-btn");
+  const schemaSelectElement = document.getElementById("axi-schema-select");
+
+  if (schemaContinueBtn && schemaSelectElement) {
+    schemaContinueBtn.addEventListener("click", () => {
+      const selectedSchema = schemaSelectElement.value;
+
+      if (!selectedSchema) {
+        alert("Please select a schema to continue.");
+        return;
+      }
+
+      const selectedOption = schemaSelectElement.options[schemaSelectElement.selectedIndex];
+      const appName = selectedOption.dataset.appname || selectedSchema;
+
+      window.ui.hideModal("axiSchemaModal");
+      triggerSuccessRedirect(`Loading ${appName}....`, selectedSchema);
+
+    })
+  }
+
+
 })();
