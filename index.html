@@ -1186,14 +1186,14 @@
                                     </svg>
                                     Continue with Google
                                 </button>
-                                <button type="button" class="social-btn" onclick="axiSocialLogin('microsoft', 'login')">
+                                <button type="button" class="social-btn" onclick="axiSocialLogin('office365', 'login')">
                                     <svg viewBox="0 0 21 21">
                                         <rect x="0" y="0" width="10" height="10" fill="#F25022" />
                                         <rect x="11" y="0" width="10" height="10" fill="#7FBA00" />
                                         <rect x="0" y="11" width="10" height="10" fill="#00A4EF" />
                                         <rect x="11" y="11" width="10" height="10" fill="#FFB900" />
                                     </svg>
-                                    Continue with Microsoft
+                                    Continue with Office 365
                                 </button>
                                 <!-- <button type="button" class="social-btn" onclick="axiSocialLogin('linkedin')">
                                     <svg viewBox="0 0 24 24" fill="#0A66C2">
@@ -1281,53 +1281,56 @@
         </div>
     </div>
 
-    <div class="modal fade" id="axiSchemaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="gradient-bg">
-        <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
-    </div>
-    
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="gradient-bg">
-                <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
-            </div>
-            
-            <div class="form-box-wrapper box-anim">
-                <div class="register-form-box" style="width: 100%; max-width: 550px; margin: 0 auto;">
-                    
-                    <div class="btn-wrapper">
-                        <button class="close-btn" data-bs-dismiss="modal">
-                            <img src="assets/imgs/icon/cross.webp" alt="icon image">
-                        </button>
-                    </div>
-                    
-                    <div class="title-wrapper">
-                        <img src="assets/imgs/logo/axi-logo-color.svg" alt="Axpert AI" class="form-logo">
-                        <h2 class="title">Select Schema</h2>
-                    </div>
+    <div class="modal fade" id="axiSchemaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="gradient-bg">
+            <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+        </div>
 
-                    <div class="form-wrapper flex-grow-1 d-flex flex-column justify-content-center">
-                        <p class="mb-4" style="color: var(--white-2); font-size: 16px;">Multiple accounts found. Please select one to continue:</p>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="gradient-bg">
+                    <img src="assets/imgs/shape/shape-s-41.webp" alt="shape image">
+                </div>
 
-                        <form id="axi-schema-form" class="user-form" novalidate onsubmit="event.preventDefault();">
-                            <div class="input-field field-full-width mb-4">
-                                <select id="axi-schema-select" class="axi-custom-select" required>
+                <div class="form-box-wrapper box-anim">
+                    <div class="register-form-box" style="width: 100%; max-width: 550px; margin: 0 auto;">
+
+                        <div class="btn-wrapper">
+                            <button class="close-btn" data-bs-dismiss="modal">
+                                <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                            </button>
+                        </div>
+
+                        <div class="title-wrapper">
+                            <img src="assets/imgs/logo/axi-logo-color.svg" alt="Axpert AI" class="form-logo">
+                            <h2 class="title">Select Schema</h2>
+                        </div>
+
+                        <div class="form-wrapper flex-grow-1 d-flex flex-column justify-content-center">
+                            <p class="mb-4" style="color: var(--white-2); font-size: 16px;">Multiple accounts found.
+                                Please select one to continue:</p>
+
+                            <form id="axi-schema-form" class="user-form" novalidate onsubmit="event.preventDefault();">
+                                <div class="input-field field-full-width mb-4">
+                                    <select id="axi-schema-select" class="axi-custom-select" required>
                                     </select>
-                            </div>
+                                </div>
 
-                            <div class="d-flex gap-2 mt-3">
-                                <button type="button" id="axi-schema-continue-btn" class="subscribe-btn wc-btn-primary btn-text-flip large w-100">
-                                    <span data-text="Continue">Continue</span>
-                                </button>
-                            </div>
-                        </form>
+                                <div class="d-flex gap-2 mt-3">
+                                    <button type="button" id="axi-schema-continue-btn"
+                                        class="subscribe-btn wc-btn-primary btn-text-flip large w-100">
+                                        <span data-text="Continue">Continue</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- signup form  -->
     <div class="modal fade" id="signupform" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -1389,14 +1392,14 @@
                                     Continue with Google
                                 </button>
                                 <button type="button" class="social-btn"
-                                    onclick="axiSocialLogin('microsoft', 'signup')">
+                                    onclick="axiSocialLogin('office365', 'signup')">
                                     <svg viewBox="0 0 21 21">
                                         <rect x="0" y="0" width="10" height="10" fill="#F25022" />
                                         <rect x="11" y="0" width="10" height="10" fill="#7FBA00" />
                                         <rect x="0" y="11" width="10" height="10" fill="#00A4EF" />
                                         <rect x="11" y="11" width="10" height="10" fill="#FFB900" />
                                     </svg>
-                                    Continue with Microsoft
+                                    Continue with Office 365
                                 </button>
                                 <!-- <button type="button" class="social-btn" onclick="axiSocialLogin('linkedin')">
                                     <svg viewBox="0 0 24 24" fill="#0A66C2">
@@ -1544,7 +1547,7 @@
                                 <div class="input-field">
                                     <input type="text" id="axi-state" placeholder="State / Province">
                                 </div>
-                                <div class="input-field">
+                                <div class="input-field field-full-width">
                                     <input type="text" id="axi-address" placeholder="Address">
                                 </div>
                                 <div class="input-field">
@@ -1553,7 +1556,7 @@
                                 <div class="input-field">
                                     <input type="text" id="axi-tax-no" placeholder="Tax No (GST / VAT)">
                                 </div>
-                                <div class="input-field">
+                                <div class="input-field field-full-width">
                                     <input type="tel" id="axi-mobile" placeholder="Mobile number">
                                 </div>
 

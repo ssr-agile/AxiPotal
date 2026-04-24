@@ -142,6 +142,10 @@
   line-height: 1.5 !important;
 }
 
+.register-form-box #axi-mobile {
+  padding-left: 130px !important;
+}
+
 /* Input Fields - dark style */
 .register-form-box .input-field input,
 .login-form-box .input-field input {
@@ -306,10 +310,6 @@
   text-align: center;
 }
 
-.register-form-box #axi-mobile {
-  padding-left: 130px !important;
-}
-
 /* ── Company Details Modal (Step 2) fixes ── */
 
 /* Match Step 1 size — make modal content scrollable without visible scrollbar */
@@ -362,14 +362,15 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  
-  
+
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23747474' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 18px center !important;
   background-size: 16px !important;
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .axi-custom-select:focus {

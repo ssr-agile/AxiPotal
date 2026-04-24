@@ -64,8 +64,6 @@
     return base.replace(/\/$/, "") + "/" + path;
   }
 
-
-
   // Encrypted-key cache (one encrypt call per raw secret per session)
   const _encCache = new Map();
   async function _getEncKey(rawSecret) {
@@ -137,13 +135,13 @@
   // Domain-specific API calls
   window.api = {
     axiUserValidate: (emailId) => {
-      const axiUserValidateUrl = axiClientApiUrl("api/AxiClient/AxiUserValidate");
+      const axiUserValidateUrl = axiClientApiUrl(
+        "api/AxiClient/AxiUserValidate",
+      );
       console.log(axiUserValidateUrl);
       return _post(axiUserValidateUrl, {
-        userName: emailId
+        userName: emailId,
       });
-
-
     },
     emailCheck: (emailid) =>
       _armSql("AXIEMailCheck", { emailid }, SECRETS.emailCheck),
@@ -253,7 +251,7 @@
   function _store(key, val) {
     try {
       localStorage.setItem(key, JSON.stringify(val));
-    } catch { }
+    } catch {}
   }
   function _load(key, fallback) {
     try {
@@ -383,6 +381,26 @@
   function _axiAccountExists(resp) {
     const rows = resp?.["AXI Account Check"]?.rows;
     return Array.isArray(rows) && rows.length > 0;
+  }
+  async function _axiUserValidate(email) {
+    const response = await api.axiUserValidate(email);
+
+    if (!response?.Success) {
+      throw new Error(response?.message || "Validation failed for: " + email);
+    }
+
+    let schemas;
+    try {
+      schemas = JSON.parse(response.JSON || "[]");
+    } catch {
+      throw new Error("Invalid schema data received from server.");
+    }
+
+    if (!Array.isArray(schemas) || schemas.length === 0) {
+      throw new Error("No schemas found for: " + email);
+    }
+
+    return schemas;
   }
 
   function _extractRecordId(resp) {
@@ -517,7 +535,7 @@
         try {
           if (countryInput)
             countryInput.value = iti.getSelectedCountryData()?.name || "";
-        } catch { }
+        } catch {}
       };
       mobileInput.addEventListener("countrychange", () => {
         mobileInput.value = "";
@@ -982,33 +1000,16 @@
 
         // }
 
+        const response = await _axiUserValidate(email);
 
-          const response = await api.axiUserValidate(email);
+        // if (schemas.length === 1) {
+        //   window.ui.hideMo
+        // }
 
-          if (!response || !response.Success) {
-            window.ui.showErr(loginErrEl, "Error: " + response?.message);
-            return;
-          }
+        window.ui.hideModal("staticBackdrop");
 
-          let schemas = [];
-
-          schemas = JSON.parse(response.JSON || []);
-
-          if (schemas.length === 0) {
-            window.ui.showErr(loginErrEl, "No Schemas found for username: " + email);
-            return;
-          }
-
-          // if (schemas.length === 1) {
-          //   window.ui.hideMo
-          // }
-
-          window.ui.hideModal("staticBackdrop")
-
-          renderSchemaSelection(schemas);
-          window.ui.showModal("axiSchemaModal");
-
-
+        renderSchemaSelection(response);
+        window.ui.showModal("axiSchemaModal");
 
         // triggerSuccessRedirect("Login successful.", "");
       } catch (err) {
@@ -1068,6 +1069,19 @@
     }
   }
 
+  window.axiProceedToSchemaSelection = async function (email) {
+    try {
+      const schemas = await _axiUserValidate(email);
+      window.ui.hideModal("staticBackdrop");
+      window.renderSchemaSelection(schemas);
+      window.ui.showModal("axiSchemaModal");
+    } catch (err) {
+      console.error("[axiProceedToSchemaSelection]", err);
+      // Re-throw so the caller (oauth.js) can wipe the bad session + toast
+      throw err;
+    }
+  };
+
   /* ═══════════════════════════════════════════════════════════
      10. BOOT
   ═══════════════════════════════════════════════════════════ */
@@ -1081,7 +1095,7 @@
 
   // triggerSignupSuccessPopup();
 
-  function renderSchemaSelection(schemas) {
+  window.renderSchemaSelection = (schemas) => {
     const selectElement = document.getElementById("axi-schema-select");
 
     if (!selectElement) {
@@ -1099,7 +1113,7 @@
     defaultOption.selected = true;
     selectElement.appendChild(defaultOption);
 
-    schemas.forEach(schema => {
+    schemas.forEach((schema) => {
       const isValid = schema.status === "Valid";
       const option = document.createElement("option");
 
@@ -1110,12 +1124,12 @@
 
       if (!isValid) {
         option.disabled = true;
-        option.text += "- Invalid"
+        option.text += "- Invalid";
       }
 
       selectElement.appendChild(option);
     });
-  }
+  };
 
   const schemaContinueBtn = document.getElementById("axi-schema-continue-btn");
   const schemaSelectElement = document.getElementById("axi-schema-select");
@@ -1129,14 +1143,12 @@
         return;
       }
 
-      const selectedOption = schemaSelectElement.options[schemaSelectElement.selectedIndex];
+      const selectedOption =
+        schemaSelectElement.options[schemaSelectElement.selectedIndex];
       const appName = selectedOption.dataset.appname || selectedSchema;
 
       window.ui.hideModal("axiSchemaModal");
       triggerSuccessRedirect(`Loading ${appName}....`, selectedSchema);
-
-    })
+    });
   }
-
-
 })();

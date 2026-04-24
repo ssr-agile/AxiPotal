@@ -6,7 +6,7 @@
 // (function () {
 const AXI_CONFIG = {
   google: {},
-  microsoft: {},
+  office365: {},
   supabase: {},
 };
 
@@ -16,7 +16,7 @@ async function loadSettings() {
   try {
     if (!window.CONFIG) return;
     AXI_CONFIG.google = CONFIG.AxiPortal.OAuth.google;
-    AXI_CONFIG.microsoft = CONFIG.AxiPortal.OAuth.microsoft;
+    AXI_CONFIG.office365 = CONFIG.AxiPortal.OAuth.office365;
     AXI_CONFIG.supabase = CONFIG.AxiPortal.OAuth.supabase;
   } catch (e) {
     console.warn("appsettings.json not found (OAuth):", e);
@@ -35,11 +35,29 @@ function getSupabase() {
 }
 
 // ── Social router  (add new providers here) ─────────────────
-function axiSocialLogin(provider, authMode) {
+async function axiSocialLogin(provider, authMode) {
   const isLogin = authMode === "login";
+
+  if (isLogin) {
+    const hasSession = getValidSessionData("axi_social_user", provider);
+    if (hasSession) {
+      try {
+        const stored = JSON.parse(sessionStorage.getItem("axi_social_user"));
+        if (!stored?.email) throw new Error("Stored session missing email.");
+        await window.axiProceedToSchemaSelection(stored.email);
+      } catch (e) {
+        console.error("[axiSocialLogin] Session bypass failed:", e);
+        // Session is bad/stale — wipe it and let user re-authenticate
+        sessionStorage.removeItem("axi_social_user");
+        axiToast("Session expired. Please log in again.");
+      }
+      return; // ← critical: skip OAuth entirely
+    }
+  }
+
   const handlers = {
     google: () => _googleLogin(isLogin),
-    microsoft: () => _msLogin(isLogin),
+    office365: () => _msLogin(isLogin),
     github: () => _githubLogin(isLogin),
     linkedin: () => _linkedinLogin(isLogin),
   };
@@ -64,6 +82,7 @@ function _googleLogin(isLogin) {
             "https://www.googleapis.com/oauth2/v3/userinfo",
             { headers: { Authorization: "Bearer " + access_token } },
           ).then((r) => r.json());
+          console.log(info);
           await axiHandleSocialUser(
             {
               name: info.name,
@@ -93,10 +112,10 @@ async function _getMsal() {
   }
   _msal = new msal.PublicClientApplication({
     auth: {
-      clientId: AXI_CONFIG.microsoft.clientId,
+      clientId: AXI_CONFIG.office365.clientId,
       authority:
         "https://login.microsoftonline.com/" +
-        (AXI_CONFIG.microsoft.tenantId || "common"),
+        (AXI_CONFIG.office365.tenantId || "common"),
       redirectUri: window.location.origin,
     },
     cache: { cacheLocation: "sessionStorage" },
@@ -111,6 +130,7 @@ async function _msLogin(isLogin) {
     const res = await inst.loginPopup({
       scopes: ["openid", "email", "profile", "User.Read"],
     });
+    console.log(res);
     await axiHandleSocialUser(
       {
         name: res.account.name,
@@ -118,7 +138,7 @@ async function _msLogin(isLogin) {
         accessToken: res.accessToken,
         sub: res.account?.idTokenClaims?.sub,
       },
-      "microsoft",
+      "office365",
       isLogin,
     );
   } catch (e) {
@@ -225,10 +245,11 @@ async function axiHandleSocialUser(user, provider, isLogin) {
       );
       return;
     }
+    const now = Math.floor(Date.now() / 1000);
 
     sessionStorage.setItem(
       "axi_social_user",
-      JSON.stringify({ ...user, provider }),
+      JSON.stringify({ ...user, provider, exp: now + 5 * 60 }),
     );
 
     if (isLogin) {
@@ -266,7 +287,7 @@ function axiToast(msg) {
       left: "50%",
       transform: "translateX(-50%)",
       background: "#1a1a2e",
-      color: "#ff4d33",
+      color: "#f89181",
       padding: "13px 22px",
       borderRadius: "10px",
       zIndex: "999999",
@@ -291,6 +312,46 @@ async function _validateSocialEmail(email, isLogin) {
   const emailExists = Array.isArray(rows) && rows.length > 0;
   // Signup: email must NOT exist. Login: email MUST exist.
   return isLogin ? emailExists : !emailExists;
+}
+
+function getValidSessionData(key, provider) {
+  const raw = sessionStorage.getItem(key);
+
+  if (!raw) {
+    // console.warn("No session data found");
+    return false;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(raw);
+  } catch (e) {
+    console.error("Invalid JSON in sessionStorage");
+    return false;
+  }
+
+  // Validate required fields
+  if (!data.provider || !data.exp) {
+    // console.warn("Missing required fields");
+    return false;
+  }
+
+  // Validate provider
+  if (data.provider !== provider) {
+    // console.warn("Invalid provider");
+    return false;
+  }
+
+  // Validate expiration (assuming exp is in seconds like JWT)
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  if (data.exp < currentTime) {
+    console.warn("Session expired");
+    sessionStorage.removeItem(key); // optional cleanup
+    return false;
+  }
+
+  return true;
 }
 
 window.addEventListener("axi:config-ready", loadSettings);
