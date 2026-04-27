@@ -44,7 +44,11 @@ async function axiSocialLogin(provider, authMode) {
       try {
         const stored = JSON.parse(sessionStorage.getItem("axi_social_user"));
         if (!stored?.email) throw new Error("Stored session missing email.");
-        await window.axiProceedToSchemaSelection(stored.email);
+        await window.axiProceedToSchemaSelection(
+          stored.email,
+          stored.sub,
+          stored.provider,
+        );
       } catch (e) {
         console.error("[axiSocialLogin] Session bypass failed:", e);
         // Session is bad/stale — wipe it and let user re-authenticate

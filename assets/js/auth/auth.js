@@ -8,7 +8,13 @@
   /* ═══════════════════════════════════════════════════════════
      1. SETTINGS  –  loaded from appsettings.json at boot
   ═══════════════════════════════════════════════════════════ */
-  const APP = { axappurl: "", axarmurl: "", AxiClientAPI: "" };
+  const APP = {
+    axappurl: "",
+    axarmurl: "",
+    AxiClientAPI: "",
+    EncryptionKey: "",
+    EncryptionIV: "",
+  };
   const SECRETS = {
     createAccount: "",
     emailCheck: "",
@@ -22,6 +28,9 @@
     country: "",
   };
   window.CONFIG = {};
+  const userDetail = {
+    email: "",
+  };
   async function loadSettings() {
     try {
       const res = await fetch("axiglobalconfig.json");
@@ -30,6 +39,10 @@
       APP.axappurl = CONFIG.AxiPortal.axappurl || "";
       APP.axarmurl = CONFIG.AxiPortal.axarmurl || "";
       APP.AxiClientAPI = CONFIG.AxiClientAPI || "";
+      APP.EncryptionKey =
+        CONFIG.EncryptionKey || CONFIG.AxiPortal.EncryptionKey;
+      APP.EncryptionIV = CONFIG.EncryptionIV || CONFIG.AxiPortal.EncryptionIV;
+
       SECRETS.createAccount = CONFIG.AxiPortal.SECRETS.createAccount;
       SECRETS.emailCheck = CONFIG.AxiPortal.SECRETS.emailCheck;
       SECRETS.accountDetails = CONFIG.AxiPortal.SECRETS.accountDetails;
@@ -134,13 +147,15 @@
 
   // Domain-specific API calls
   window.api = {
-    axiUserValidate: (emailId) => {
+    axiUserValidate: (emailId, SSOKey, SSOProvider) => {
       const axiUserValidateUrl = axiClientApiUrl(
         "api/AxiClient/AxiUserValidate",
       );
       console.log(axiUserValidateUrl);
       return _post(axiUserValidateUrl, {
         userName: emailId,
+        SSOKey,
+        SSOProvider,
       });
     },
     emailCheck: (emailid) =>
@@ -382,8 +397,8 @@
     const rows = resp?.["AXI Account Check"]?.rows;
     return Array.isArray(rows) && rows.length > 0;
   }
-  async function _axiUserValidate(email) {
-    const response = await api.axiUserValidate(email);
+  async function _axiUserValidate(email, SSOKey, SSOProvider) {
+    const response = await api.axiUserValidate(email, SSOKey, SSOProvider);
 
     if (!response?.Success) {
       throw new Error(response?.message || "Validation failed for: " + email);
@@ -391,7 +406,7 @@
 
     let schemas;
     try {
-      schemas = JSON.parse(response.JSON || "[]");
+      schemas = JSON.parse(response.JSON || []);
     } catch {
       throw new Error("Invalid schema data received from server.");
     }
@@ -484,7 +499,7 @@
     setTimeout(() => {
       let url = APP.axappurl || "/";
       url += url.includes("?") ? "&" : "?";
-      window.location.href = url + axiaccid;
+      window.location.href = url + `axi=${axiaccid}`;
     }, 2000);
   };
 
@@ -951,6 +966,10 @@
     // const step2 = document.getElementById("axi-login-step-2");
     const continueBtn = document.getElementById("axi-login-continue");
     // const backBtn = document.getElementById("axi-login-back");
+    const schemaContinueBtn = document.getElementById(
+      "axi-schema-continue-btn",
+    );
+    const schemaSelectElement = document.getElementById("axi-schema-select");
 
     function showStep(n) {
       window.ui.clearErr(loginErrEl);
@@ -1025,6 +1044,31 @@
       }
     });
 
+    if (schemaContinueBtn && schemaSelectElement) {
+      schemaContinueBtn.addEventListener("click", async () => {
+        const selectedSchema = schemaSelectElement.value;
+
+        if (!selectedSchema) {
+          alert("Please select a schema to continue.");
+          return;
+        }
+
+        const selectedOption =
+          schemaSelectElement.options[schemaSelectElement.selectedIndex];
+        const appName = selectedOption.dataset.appname || selectedSchema;
+
+        window.ui.hideModal("axiSchemaModal");
+        // schemaname=pgbase114~username=malakonda@agile-labs.com
+        const rawUserDataStr = `schemaname=${selectedSchema}~username=${userDetail?.email}`;
+        // const rawUserDataStr = `schemaname=${selectedSchema}~username=${emailInput.value.trim()}`;
+        const encryptedUserData = await aesEncryptAxiUserData(rawUserDataStr);
+        // const decryptedUserData = await aesDecryptAxiUserData(encryptedUserData);
+        console.log("Encrypted user data: " + encryptedUserData);
+        // console.log("Decrypted user data: " + decryptedUserData);
+        triggerSuccessRedirect(`Loading ${appName}....`, encryptedUserData);
+      });
+    }
+
     // backBtn?.addEventListener("click", () => showStep(1));
 
     // ── Step 2 Submit: redirect to AXI app ───────────────
@@ -1069,9 +1113,13 @@
     }
   }
 
-  window.axiProceedToSchemaSelection = async function (email) {
+  window.axiProceedToSchemaSelection = async function (
+    email,
+    SSOKey,
+    SSOProvider,
+  ) {
     try {
-      const schemas = await _axiUserValidate(email);
+      const schemas = await _axiUserValidate(email, SSOKey, SSOProvider);
       window.ui.hideModal("staticBackdrop");
       window.renderSchemaSelection(schemas);
       window.ui.showModal("axiSchemaModal");
@@ -1114,8 +1162,9 @@
     selectElement.appendChild(defaultOption);
 
     schemas.forEach((schema) => {
-      const isValid = schema.status === "Valid";
+      const isValid = schema.statusmessage === "Success";
       const option = document.createElement("option");
+      userDetail.email = schema.username;
 
       option.value = schema.schemaname;
       option.text = `${schema.appname}`;
@@ -1131,24 +1180,103 @@
     });
   };
 
-  const schemaContinueBtn = document.getElementById("axi-schema-continue-btn");
-  const schemaSelectElement = document.getElementById("axi-schema-select");
+  // async function aesEncryptAxiUserData(text) {
+  //   const rawKey = APP.EncryptionKey;
+  //   const key = await getKey(rawKey);
+  //   const enc = new TextEncoder();
 
-  if (schemaContinueBtn && schemaSelectElement) {
-    schemaContinueBtn.addEventListener("click", () => {
-      const selectedSchema = schemaSelectElement.value;
+  //   const rawIV = APP.EncryptionIV;
 
-      if (!selectedSchema) {
-        alert("Please select a schema to continue.");
-        return;
-      }
+  //   const iv = parseByteArray(rawIV);
 
-      const selectedOption =
-        schemaSelectElement.options[schemaSelectElement.selectedIndex];
-      const appName = selectedOption.dataset.appname || selectedSchema;
+  //   const encryptedUserData = await window.crypto.subtle.encrypt(
+  //     {
+  //       name: "AES-CBC", iv: iv
+  //     },
+  //     key,
+  //     enc.encode(text)
+  //   )
 
-      window.ui.hideModal("axiSchemaModal");
-      triggerSuccessRedirect(`Loading ${appName}....`, selectedSchema);
-    });
+  //   console.log("Encrypted (Buffer):", new Uint8Array(encryptedUserData));
+
+  //   const encryptedUserDataStr = arrayBufferToBase64(encryptedUserData);
+
+  //   return encryptedUserDataStr;
+  // }
+
+  async function aesEncryptAxiUserData(text) {
+    const keyStr = APP.EncryptionKey;
+    const ivStr = APP.EncryptionIV;
+
+    const keyBytes = new Uint8Array(keyStr.split(",").map(Number));
+    const ivBytes = new Uint8Array(ivStr.split(",").map(Number));
+
+    const enc = new TextEncoder();
+
+    const cryptoKey = await crypto.subtle.importKey(
+      "raw",
+      keyBytes,
+      { name: "AES-CBC" },
+      false,
+      ["encrypt"],
+    );
+
+    const encryptedUserData = await crypto.subtle.encrypt(
+      {
+        name: "AES-CBC",
+        iv: ivBytes,
+      },
+      cryptoKey,
+      enc.encode(text),
+    );
+
+    const hexString = Array.from(new Uint8Array(encryptedUserData))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("-")
+      .toUpperCase();
+
+    return hexString;
+  }
+
+  function parseByteArray(str) {
+    return new Uint8Array(str.split(",").map((n) => parseInt(n.trim(), 10)));
+  }
+
+  async function getKey(key) {
+    const rawKey = parseByteArray(key);
+    // const rawKey = new TextEncoder().encode(rawKey);
+
+    return await crypto.subtle.importKey(
+      "raw",
+      rawKey,
+      { name: "AES-CBC" },
+      false,
+      ["encrypt", "decrypt"],
+    );
+  }
+
+  // Note: Testing function
+  async function aesDecryptAxiUserData(encryptedText) {
+    const key = APP.EncryptionKey;
+    const iv = APP.EncryptionIV;
+
+    const decryptedData = await window.crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: iv },
+      key,
+      encryptedText,
+    );
+
+    return decryptedData;
+  }
+
+  function arrayBufferToBase64(buffer) {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    return btoa(binary);
   }
 })();
