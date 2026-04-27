@@ -1166,7 +1166,7 @@
       const option = document.createElement("option");
       userDetail.email = schema.username;
 
-      option.value = schema.schemaname;
+      option.value = schema.appname;
       option.text = `${schema.appname}`;
 
       option.dataset.appname = schema.appname;
