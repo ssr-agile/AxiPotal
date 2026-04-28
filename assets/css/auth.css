@@ -82,7 +82,8 @@
 #signupform,
 #staticBackdrop,
 #axiCompanyDetailsModal,
-#axiSchemaModal {
+#axiSchemaModal
+ {
   background: transparent !important;
 }
 
@@ -388,3 +389,38 @@
   color: #747474 !important;
   font-style: italic;
 }
+
+#signupSuccessModal {
+background: none;
+
+}
+
+#signupSuccessModal .modal-content {
+  position: relative;
+  height: 30rem; 
+}
+
+#signupSuccessModal .close-btn {
+  position: absolute; 
+  top: 12px; 
+  right: 12px; 
+  background: transparent; 
+  border: none; 
+  box-shadow: none;
+  outline: none;
+  padding: 0; 
+  cursor: pointer; 
+  z-index: 10; 
+}
+
+#signupSuccessModal .close-btn img {
+  width: 18px; 
+  height: 18px; 
+}
+
+#signupSuccessModal .close-btn:focus,
+#signupSuccessModal .close-btn:active {
+  outline: none; 
+  box-shadow: none; 
+}
+

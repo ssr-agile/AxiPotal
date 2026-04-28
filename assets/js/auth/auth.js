@@ -629,7 +629,7 @@
   ═══════════════════════════════════════════════════════════ */
   function triggerSignupSuccessPopup() {
     window.ui.hideModal("axiCompanyDetailsModal");
-    window.ui.showModal("setupProgressModal");
+    window.ui.showModal("signupSuccessModal");
   }
   /* ═══════════════════════════════════════════════════════════
      6. REDIRECT & SUCCESS
@@ -1252,5 +1252,5 @@
     checkUrlIntent(); // ← add this
   });
 
-  // triggerSignupSuccessPopup();
+  triggerSignupSuccessPopup();
 })();
