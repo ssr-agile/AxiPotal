@@ -60,10 +60,10 @@ async function axiSocialLogin(provider, authMode) {
   }
 
   const handlers = {
-    google: () => _googleLogin(isLogin),
-    office365: () => _msLogin(isLogin),
-    github: () => _githubLogin(isLogin),
-    linkedin: () => _linkedinLogin(isLogin),
+    Google: () => _googleLogin(isLogin),
+    Office365: () => _msLogin(isLogin),
+    GitHub: () => _githubLogin(isLogin),
+    LinkedIn: () => _linkedinLogin(isLogin),
   };
   const fn = handlers[provider];
   if (fn) fn();
@@ -239,16 +239,16 @@ async function axiHandleSocialUser(user, provider, isLogin) {
     "Checking email…",
   );
   try {
-    // const isValid = await _validateSocialEmail(user.email, isLogin);
-    // if (!isValid) {
-    //   await _clearProviderSession(provider);
-    //   axiToast(
-    //     isLogin
-    //       ? "No account found with this email. Please sign up first."
-    //       : "This email is already registered. Please log in instead.",
-    //   );
-    //   return;
-    // }
+    const isValid = await _validateSocialEmail(user.email, isLogin);
+    if (!isValid) {
+      await _clearProviderSession(provider);
+      axiToast(
+        isLogin
+          ? "No account found with this email. Please sign up first."
+          : "This email is already registered. Please log in instead.",
+      );
+      return;
+    }
     const now = Math.floor(Date.now() / 1000);
 
     sessionStorage.setItem(
@@ -257,10 +257,8 @@ async function axiHandleSocialUser(user, provider, isLogin) {
     );
 
     if (isLogin) {
-    
-
       // window.triggerSuccessRedirect("Login successful", "");
-      window.axiProceedToSchemaSelection(user?.email, user?.sub, provider); 
+      window.axiProceedToSchemaSelection(user?.email, user?.sub, provider);
     } else {
       setTimeout(
         () =>

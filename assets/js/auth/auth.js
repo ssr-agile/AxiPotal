@@ -31,6 +31,14 @@
   const userDetail = {
     email: "",
   };
+
+  const Providers = {
+    google: "Google",
+    github: "GitHub",
+    office365: "Office365",
+    Credential: "Credential",
+  };
+
   async function loadSettings() {
     try {
       const res = await fetch("axiglobalconfig.json");
@@ -166,6 +174,10 @@
       _armSql("AXIAccountDetails", { axiaccid }, SECRETS.accountDetails),
 
     createAccount(payload) {
+      let date = new Date();
+      let expDays = 15;
+      date.setDate(date.getDate() + expDays);
+      let expDate = date.toLocaleDateString("en-GB");
       return _armExecute(
         "CreateAXIAccount",
         {
@@ -188,6 +200,11 @@
                   emailid: payload.email,
                   orgname: payload.orgname,
                   axiaccid: payload.axiaccid,
+                  maxUsers: 2,
+                  expiryDays: expDays,
+                  expireOn: expDate,
+                  isActiveApp: "T",
+                  userCount: 1,
                 },
               },
             },
@@ -216,29 +233,15 @@
                   region: payload?.Region,
                   isactive: payload.IsActive ?? "False",
                   isverified: payload.IsVerified ?? "False",
-                },
-              },
-
-              dc2: {
-                row1: {
-                  authprovider: payload?.AuthProvider,
+                  authProvider: payload?.AuthProvider ?? "Credentials",
                   ssoid: payload?.SSOId,
                   passwordmd5: payload?.PasswordMd5,
-                  passwordhash: payload?.PasswordHash,
-                  passwordsalt: payload?.PasswordSalt,
-                  isprimary: payload.IsPrimary ?? "False",
-                },
-              },
-
-              dc3: {
-                row1: {
-                  appname: payload?.AppName,
-                  schemaname: payload?.SchemaName,
+                  passwordHash: payload?.PasswordHash,
+                  isPrimary: payload.IsPrimary ?? "F",
+                  // appName: payload?.AppName,
+                  axiaccid: payload?.AxiAccId,
+                  schemaName: payload?.SchemaName,
                   role: payload.Role ?? "OWNER",
-                  maxusers: payload.MaxUsers ?? 2,
-                  expirydays: payload.ExpiryDays ?? 15,
-                  expireon: payload?.ExpireOn || "",
-                  isactiveapp: payload.AppIsActive ?? "True",
                 },
               },
             },
@@ -440,6 +443,145 @@
     return "Something went wrong. Please try again.";
   }
 
+  window.renderSchemaSelection = (schemas) => {
+    const selectElement = document.getElementById("axi-schema-select");
+
+    if (!selectElement) {
+      console.error("Missing #axi-schema-select in the DOM.");
+      return;
+    }
+
+    selectElement.innerHTML = "";
+
+    const defaultOption = document.createElement("option");
+
+    defaultOption.value = "";
+    defaultOption.text = "Select an Appname to continue...";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    selectElement.appendChild(defaultOption);
+
+    schemas.forEach((schema) => {
+      const isValid = schema.statusmessage === "Success";
+      const option = document.createElement("option");
+      // userDetail.email = schema.username;
+
+      option.value = schema.axiaccid;
+      option.text = `${schema.axiaccid}`;
+
+      option.dataset.axiaccid = schema.axiaccid;
+      option.dataset.username = schema.username;
+      option.dataset.isprimary = schema.isPrimary;
+
+      if (!isValid) {
+        option.disabled = true;
+        option.text += "- Invalid";
+      }
+
+      selectElement.appendChild(option);
+    });
+  };
+
+  // async function aesEncryptAxiUserData(text) {
+  //   const rawKey = APP.EncryptionKey;
+  //   const key = await getKey(rawKey);
+  //   const enc = new TextEncoder();
+
+  //   const rawIV = APP.EncryptionIV;
+
+  //   const iv = parseByteArray(rawIV);
+
+  //   const encryptedUserData = await window.crypto.subtle.encrypt(
+  //     {
+  //       name: "AES-CBC", iv: iv
+  //     },
+  //     key,
+  //     enc.encode(text)
+  //   )
+
+  //   console.log("Encrypted (Buffer):", new Uint8Array(encryptedUserData));
+
+  //   const encryptedUserDataStr = arrayBufferToBase64(encryptedUserData);
+
+  //   return encryptedUserDataStr;
+  // }
+
+  async function aesEncryptAxiUserData(text) {
+    const keyStr = APP.EncryptionKey;
+    const ivStr = APP.EncryptionIV;
+
+    const keyBytes = new Uint8Array(keyStr.split(",").map(Number));
+    const ivBytes = new Uint8Array(ivStr.split(",").map(Number));
+
+    const enc = new TextEncoder();
+
+    const cryptoKey = await crypto.subtle.importKey(
+      "raw",
+      keyBytes,
+      { name: "AES-CBC" },
+      false,
+      ["encrypt"],
+    );
+
+    const encryptedUserData = await crypto.subtle.encrypt(
+      {
+        name: "AES-CBC",
+        iv: ivBytes,
+      },
+      cryptoKey,
+      enc.encode(text),
+    );
+
+    const hexString = Array.from(new Uint8Array(encryptedUserData))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("-")
+      .toUpperCase();
+
+    return hexString;
+  }
+
+  function parseByteArray(str) {
+    return new Uint8Array(str.split(",").map((n) => parseInt(n.trim(), 10)));
+  }
+
+  async function getKey(key) {
+    const rawKey = parseByteArray(key);
+    // const rawKey = new TextEncoder().encode(rawKey);
+
+    return await crypto.subtle.importKey(
+      "raw",
+      rawKey,
+      { name: "AES-CBC" },
+      false,
+      ["encrypt", "decrypt"],
+    );
+  }
+
+  // Note: Testing function
+  async function aesDecryptAxiUserData(encryptedText) {
+    const key = APP.EncryptionKey;
+    const iv = APP.EncryptionIV;
+
+    const decryptedData = await window.crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: iv },
+      key,
+      encryptedText,
+    );
+
+    return decryptedData;
+  }
+
+  function arrayBufferToBase64(buffer) {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    return btoa(binary);
+  }
+
   /* ═══════════════════════════════════════════════════════════
      5. UI HELPERS
   ═══════════════════════════════════════════════════════════ */
@@ -586,40 +728,6 @@
       // Auto-generate an AXI ID placeholder
       window.ui.showModal("axiCompanyDetailsModal");
     };
-    // window.openCompanyDetailsModal = async function () {
-    //   let generatedAccId = "";
-    //   window.ui.hideModal("signupform");
-    //   // Pre-fill email from social session if available
-    //   const social = _getSocialUser();
-    //   if (social?.email && emailInput) emailInput.value = social.email;
-    //   // Auto-generate an AXI ID placeholder
-
-    //   let foundValidId = false;
-
-    //   for (let i = 0; i < 4; i++) {
-    //     generatedAccId = generateAxiId(orgNameInput?.value || "");
-
-    //     const response = await api.accountCheck(generatedAccId);
-    //     const rows = response?.["AXI Account Check"]?.rows;
-    //     if (response?.success === true && rows?.length === 0) {
-    //       if (accountIdInput && !accountIdInput.value) {
-    //         accountIdInput.value = generatedAccId;
-    //       }
-
-    //       foundValidId = true;
-    //       break;
-    //     }
-    //   }
-
-    //   window.ui.showModal("axiCompanyDetailsModal");
-
-    //   if (!foundValidId) {
-    //     window.ui.showErr(
-    //       companyAccountErrEl,
-    //       "Unable generate a unique Axi Account Id. Please try regenerating",
-    //     );
-    //   }
-    // };
 
     // ── Step 1: email validation → open company modal ─────
     if (emailInput) {
@@ -847,7 +955,7 @@
       const payload = {
         email,
         orgname,
-        axiaccid: axiaccid?.toLowerCase() || "",
+        axiaccid: axiaccid?.toUpperCase() || "",
         country: countryInput?.value.trim() || "",
         state: stateInput?.value.trim() || "",
         addr: addressInput?.value.trim() || "",
@@ -901,18 +1009,19 @@
           Region: Region.country,
           IsActive: "T",
           IsVerified: profile?.isEmailVerified == true ? "True" : "False",
-          AuthProvider: profile?.provider || "Credential",
+          AuthProvider: Providers[profile?.provider] || "Credentials",
           SSOId: profile?.sub || "",
           PasswordMd5: "",
           PasswordHash: "",
-          PasswordSalt: "",
+          // PasswordSalt: "",
           IsPrimary: "True",
-          AppName: axiaccid?.toLowerCase() || "",
+          // AppName: axiaccid?.toLowerCase() || "",
+          AxiAccId: axiaccid?.toUpperCase() || "",
           SchemaName: axiaccid?.toLowerCase() || "",
           Role: "OWNER",
-          MaxUsers: 2,
-          ExpiryDays: 15,
-          ExpireOn: "23/7/2027",
+          // MaxUsers: 2,
+          // ExpiryDays: 15,
+          // ExpireOn: "23/7/2027",
           // IsActive: true,
         };
 
@@ -1055,9 +1164,9 @@
 
         const selectedOption =
           schemaSelectElement.options[schemaSelectElement.selectedIndex];
-        const appName = selectedOption.dataset.appname || selectedSchema;
-        const username = selectedOption.dataset.username; 
-        const isPrimary = selectedOption.dataset.isprimary; 
+        const axiaccid = selectedOption.dataset.axiaccid || selectedSchema;
+        const username = selectedOption.dataset.username;
+        const isPrimary = selectedOption.dataset.isprimary;
 
         window.ui.hideModal("axiSchemaModal");
         // schemaname=pgbase114~username=malakonda@agile-labs.com
@@ -1067,7 +1176,7 @@
         // const decryptedUserData = await aesDecryptAxiUserData(encryptedUserData);
         console.log("Encrypted user data: " + encryptedUserData);
         // console.log("Decrypted user data: " + decryptedUserData);
-        triggerSuccessRedirect(`Loading ${appName}....`, encryptedUserData);
+        triggerSuccessRedirect(`Loading ${axiaccid}....`, encryptedUserData);
       });
     }
 
@@ -1144,144 +1253,4 @@
   });
 
   // triggerSignupSuccessPopup();
-
-  window.renderSchemaSelection = (schemas) => {
-    const selectElement = document.getElementById("axi-schema-select");
-
-    if (!selectElement) {
-      console.error("Missing #axi-schema-select in the DOM.");
-      return;
-    }
-
-    selectElement.innerHTML = "";
-
-    const defaultOption = document.createElement("option");
-
-    defaultOption.value = "";
-    defaultOption.text = "Select an Appname to continue...";
-    defaultOption.disabled = true;
-    defaultOption.selected = true;
-    selectElement.appendChild(defaultOption);
-
-    schemas.forEach((schema) => {
-      const isValid = schema.statusmessage === "Success";
-      const option = document.createElement("option");
-      // userDetail.email = schema.username;
-
-      option.value = schema.appname;
-      option.text = `${schema.appname}`;
-
-      option.dataset.appname = schema.appname;
-      option.dataset.username = schema.username; 
-      option.dataset.isprimary = schema.isPrimary; 
-
-
-      if (!isValid) {
-        option.disabled = true;
-        option.text += "- Invalid";
-      }
-
-      selectElement.appendChild(option);
-    });
-  };
-
-  // async function aesEncryptAxiUserData(text) {
-  //   const rawKey = APP.EncryptionKey;
-  //   const key = await getKey(rawKey);
-  //   const enc = new TextEncoder();
-
-  //   const rawIV = APP.EncryptionIV;
-
-  //   const iv = parseByteArray(rawIV);
-
-  //   const encryptedUserData = await window.crypto.subtle.encrypt(
-  //     {
-  //       name: "AES-CBC", iv: iv
-  //     },
-  //     key,
-  //     enc.encode(text)
-  //   )
-
-  //   console.log("Encrypted (Buffer):", new Uint8Array(encryptedUserData));
-
-  //   const encryptedUserDataStr = arrayBufferToBase64(encryptedUserData);
-
-  //   return encryptedUserDataStr;
-  // }
-
-  async function aesEncryptAxiUserData(text) {
-    const keyStr = APP.EncryptionKey;
-    const ivStr = APP.EncryptionIV;
-
-    const keyBytes = new Uint8Array(keyStr.split(",").map(Number));
-    const ivBytes = new Uint8Array(ivStr.split(",").map(Number));
-
-    const enc = new TextEncoder();
-
-    const cryptoKey = await crypto.subtle.importKey(
-      "raw",
-      keyBytes,
-      { name: "AES-CBC" },
-      false,
-      ["encrypt"],
-    );
-
-    const encryptedUserData = await crypto.subtle.encrypt(
-      {
-        name: "AES-CBC",
-        iv: ivBytes,
-      },
-      cryptoKey,
-      enc.encode(text),
-    );
-
-    const hexString = Array.from(new Uint8Array(encryptedUserData))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("-")
-      .toUpperCase();
-
-    return hexString;
-  }
-
-  function parseByteArray(str) {
-    return new Uint8Array(str.split(",").map((n) => parseInt(n.trim(), 10)));
-  }
-
-  async function getKey(key) {
-    const rawKey = parseByteArray(key);
-    // const rawKey = new TextEncoder().encode(rawKey);
-
-    return await crypto.subtle.importKey(
-      "raw",
-      rawKey,
-      { name: "AES-CBC" },
-      false,
-      ["encrypt", "decrypt"],
-    );
-  }
-
-  // Note: Testing function
-  async function aesDecryptAxiUserData(encryptedText) {
-    const key = APP.EncryptionKey;
-    const iv = APP.EncryptionIV;
-
-    const decryptedData = await window.crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: iv },
-      key,
-      encryptedText,
-    );
-
-    return decryptedData;
-  }
-
-  function arrayBufferToBase64(buffer) {
-    let binary = "";
-    const bytes = new Uint8Array(buffer);
-
-    for (let i = 0; i < bytes.length; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-
-    return btoa(binary);
-  }
 })();
