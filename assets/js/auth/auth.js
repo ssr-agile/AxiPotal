@@ -471,7 +471,7 @@
 
       option.dataset.axiaccid = schema.axiaccid;
       option.dataset.username = schema.username;
-      option.dataset.isprimary = schema.isPrimary;
+      option.dataset.isprimary = schema.isprimary;
 
       if (!isValid) {
         option.disabled = true;
