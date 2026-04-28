@@ -1252,5 +1252,5 @@
     checkUrlIntent(); // ← add this
   });
 
-  triggerSignupSuccessPopup();
+  // triggerSignupSuccessPopup();
 })();
