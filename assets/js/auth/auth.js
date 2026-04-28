@@ -1056,10 +1056,12 @@
         const selectedOption =
           schemaSelectElement.options[schemaSelectElement.selectedIndex];
         const appName = selectedOption.dataset.appname || selectedSchema;
+        const username = selectedOption.dataset.username; 
+        const isPrimary = selectedOption.dataset.isprimary; 
 
         window.ui.hideModal("axiSchemaModal");
         // schemaname=pgbase114~username=malakonda@agile-labs.com
-        const rawUserDataStr = `schemaname=${selectedSchema}~username=${userDetail?.email}`;
+        const rawUserDataStr = `schemaname=${selectedSchema}~username=${username}~isprimary=${isPrimary}`;
         // const rawUserDataStr = `schemaname=${selectedSchema}~username=${emailInput.value.trim()}`;
         const encryptedUserData = await aesEncryptAxiUserData(rawUserDataStr);
         // const decryptedUserData = await aesDecryptAxiUserData(encryptedUserData);
@@ -1156,7 +1158,7 @@
     const defaultOption = document.createElement("option");
 
     defaultOption.value = "";
-    defaultOption.text = "Select a Schema...";
+    defaultOption.text = "Select an Appname to continue...";
     defaultOption.disabled = true;
     defaultOption.selected = true;
     selectElement.appendChild(defaultOption);
@@ -1164,12 +1166,15 @@
     schemas.forEach((schema) => {
       const isValid = schema.statusmessage === "Success";
       const option = document.createElement("option");
-      userDetail.email = schema.username;
+      // userDetail.email = schema.username;
 
       option.value = schema.appname;
       option.text = `${schema.appname}`;
 
       option.dataset.appname = schema.appname;
+      option.dataset.username = schema.username; 
+      option.dataset.isprimary = schema.isPrimary; 
+
 
       if (!isValid) {
         option.disabled = true;
