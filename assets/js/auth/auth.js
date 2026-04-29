@@ -402,9 +402,11 @@
     return Array.isArray(rows) && rows.length > 0;
   }
   async function _axiUserValidate(email, SSOKey, SSOProvider) {
+     const loginErrEl = document.getElementById("axi-login-error");
     const response = await api.axiUserValidate(email, SSOKey, SSOProvider);
 
     if (!response?.Success) {
+       window.ui.showErr(loginErrEl, response?.Message);
       throw new Error(response?.message || "Validation failed for: " + email);
     }
 
@@ -445,6 +447,7 @@
   }
 
   window.renderSchemaSelection = (schemas) => {
+    const selectSchemaHeading = document.querySelector(".schema-select-sub-heading"); 
     const selectElement = document.getElementById("axi-schema-select");
 
     if (!selectElement) {
@@ -456,13 +459,33 @@
 
     const defaultOption = document.createElement("option");
 
-    defaultOption.value = "";
-    defaultOption.text = "Select an Appname to continue...";
+    // defaultOption.value = "";
+    if (schemas.length === 1) {
+       defaultOption.value = schemas?.[0].axiaccid;
+       defaultOption.text = schemas?.[0].axiaccid;
+    defaultOption.disabled = false;
+    defaultOption.selected = true;
+      defaultOption.dataset.axiaccid = schemas?.[0].axiaccid;
+      defaultOption.dataset.username = schemas?.[0].username;
+      defaultOption.dataset.isprimary = schemas?.[0].isprimary;
+
+    } else {
+       defaultOption.value = "";
+       defaultOption.text = "Select an Appname to continue...";
     defaultOption.disabled = true;
     defaultOption.selected = true;
+
+    }
+    // defaultOption.text = "Select an Appname to continue...";
+    // defaultOption.disabled = true;
+    // defaultOption.selected = true;
     selectElement.appendChild(defaultOption);
 
-    schemas.forEach((schema) => {
+    if (schemas?.length === 1) {
+      selectSchemaHeading.textContent = ""; 
+    }
+ if (schemas.length > 1) {
+   schemas.forEach((schema) => {
       const isValid = schema.statusmessage === "Success";
       const option = document.createElement("option");
       // userDetail.email = schema.username;
@@ -481,6 +504,9 @@
 
       selectElement.appendChild(option);
     });
+
+ } 
+   
   };
 
   // async function aesEncryptAxiUserData(text) {
@@ -630,7 +656,7 @@
   ═══════════════════════════════════════════════════════════ */
   function triggerSignupSuccessPopup() {
     window.ui.hideModal("axiCompanyDetailsModal");
-    window.ui.showModal("setupProgressModal");
+    window.ui.showModal("signupSuccessModal");
   }
   /* ═══════════════════════════════════════════════════════════
      6. REDIRECT & SUCCESS
@@ -721,11 +747,11 @@
     );
 
     // ── Expose globally so auth.js social handler can call it ──
-    window.openCompanyDetailsModal = async function () {
+    window.openCompanyDetailsModal = async function (email = "") {
       window.ui.hideModal("signupform");
       // Pre-fill email from social session if available
       const social = _getSocialUser();
-      if (social?.email && emailInput) emailInput.value = social.email;
+      if (social?.email && !email) emailInput.value = social.email;
       // Auto-generate an AXI ID placeholder
       window.ui.showModal("axiCompanyDetailsModal");
     };
@@ -771,7 +797,7 @@
             );
             return;
           }
-          window.openCompanyDetailsModal();
+          window.openCompanyDetailsModal(email);
         } catch (err) {
           window.ui.showErr(signupErrEl, _friendlyError(err));
         } finally {
@@ -1225,7 +1251,16 @@
     SSOKey,
     SSOProvider,
   ) {
+   const loginModalEl = document.getElementById("staticBackdrop");
+
     try {
+        window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          true,
+          "Checking email…",
+        );
       const schemas = await _axiUserValidate(email, SSOKey, SSOProvider);
       window.ui.hideModal("staticBackdrop");
       window.renderSchemaSelection(schemas);
@@ -1234,6 +1269,14 @@
       console.error("[axiProceedToSchemaSelection]", err);
       // Re-throw so the caller (oauth.js) can wipe the bad session + toast
       throw err;
+    } finally {
+        window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          false,
+        );
+
     }
   };
 

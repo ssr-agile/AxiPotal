@@ -72,7 +72,19 @@ async function axiSocialLogin(provider, authMode) {
 
 // ── Google ──────────────────────────────────────────────────
 function _googleLogin(isLogin) {
-  if (!window.google?.accounts)
+   const loginModalEl = document.getElementById("staticBackdrop");
+    const loginErrEl = document.getElementById("axi-login-error");
+
+  
+  try {
+     window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          true,
+          "Checking email…",
+        );
+     if (!window.google?.accounts)
     return axiToast("Google Sign-In not ready. Please refresh.");
 
   google.accounts.oauth2
@@ -104,6 +116,22 @@ function _googleLogin(isLogin) {
       },
     })
     .requestAccessToken();
+
+  } catch (error) {
+    console.error(error); 
+     return window.ui.showErr(loginErrEl, error?.message);
+    
+
+  } finally {
+     window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          false,
+        );
+
+  }
+ 
 }
 
 // ── Microsoft (MSAL v3) ──────────────────────────────────────
@@ -130,7 +158,19 @@ async function _getMsal() {
 async function _msLogin(isLogin) {
   const inst = await _getMsal();
   if (!inst) return;
+       const loginModalEl = document.getElementById("staticBackdrop");
+    const loginErrEl = document.getElementById("axi-login-error");
+
+
   try {
+      window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          true,
+          "Checking email…",
+        );
+
     const res = await inst.loginPopup({
       scopes: ["openid", "email", "profile", "User.Read"],
     });
@@ -147,15 +187,77 @@ async function _msLogin(isLogin) {
     );
   } catch (e) {
     console.error("[MSAL]", e);
+
+     return window.ui.showErr(loginErrEl, error?.message);
+  } finally {
+     window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          false,
+        );
   }
 }
 
 // ── GitHub & LinkedIn (Supabase OAuth) ──────────────────────
 async function _githubLogin(isLogin) {
+           const loginModalEl = document.getElementById("staticBackdrop");
+    const loginErrEl = document.getElementById("axi-login-error");
+
+
+  try {
+      window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          true,
+          "Checking email…",
+        );
+
   await _supabaseOAuth("github", isLogin);
+
+
+  } catch (error) {
+    console.error(error); 
+        return window.ui.showErr(loginErrEl, error?.message);
+    
+  } finally {
+     window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          false,
+        );
+
+  }
 }
 async function _linkedinLogin(isLogin) {
+   const loginModalEl = document.getElementById("staticBackdrop");
+    const loginErrEl = document.getElementById("axi-login-error");
+  try {
+     window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          true,
+          "Checking email…",
+        );
   await _supabaseOAuth("linkedin_oidc", isLogin);
+
+
+  }catch(error) {
+      console.error(error); 
+        return window.ui.showErr(loginErrEl, error?.message);
+
+  } finally  {
+     window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          false,
+        );
+
+  }
 }
 
 async function _supabaseOAuth(provider, isLogin) {
@@ -231,6 +333,18 @@ async function _clearProviderSession(provider) {
 }
 
 async function axiHandleSocialUser(user, provider, isLogin) {
+   const loginModalEl = document.getElementById("staticBackdrop");
+  if (loginModalEl) {
+      window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          true,
+        );
+
+  }
+   
+
   window.ui.setLoading(
     signupModalEl,
     "axi-signup-loader",
@@ -271,6 +385,18 @@ async function axiHandleSocialUser(user, provider, isLogin) {
     console.error("[axiHandleSocialUser]", err);
     axiToast("Something went wrong. Please try again.");
   } finally {
+    if (loginModalEl) {
+       window.ui.setLoading(
+          loginModalEl,
+          "axi-login-loader",
+          "axi-login-loader-text",
+          true,
+        );
+
+    }
+
+     
+
     window.ui.setLoading(
       signupModalEl,
       "axi-signup-loader",

@@ -1304,11 +1304,11 @@
 
                         <div class="title-wrapper">
                             <img src="assets/imgs/logo/axi-logo-color.svg" alt="Axpert AI" class="form-logo">
-                            <h2 class="title">Select Schema</h2>
+                            <h2 class="title">Select Appname</h2>
                         </div>
 
                         <div class="form-wrapper flex-grow-1 d-flex flex-column justify-content-center">
-                            <p class="mb-4" style="color: var(--white-2); font-size: 16px;">Multiple accounts found.
+                            <p class="mb-4 schema-select-sub-heading" style="color: var(--white-2); font-size: 16px;">Multiple apps found.
                                 Please select one to continue:</p>
 
                             <form id="axi-schema-form" class="user-form" novalidate onsubmit="event.preventDefault();">
@@ -1641,7 +1641,7 @@
                     </div>
                     <h5 class="fw-bold" id="redirectModalTitle">Success!</h5>
                     <p id="redirectModalMessage" class="text-muted small mb-2"></p>
-                    <p class="small text-secondary mb-2">Redirecting you in a moment...</p>
+                    <p class="small text-secondary mb-2">Preparing your Axi Appspace. Please wait...</p>
                     <!-- <button type="button" id="btnRedirectNow" class="btn btn-sm btn-success w-100 rounded-pill">Proceed
                     Now</button>-->
                 </div>
@@ -1665,8 +1665,8 @@
                         </svg>
                     </div>
 
-                    <h3 class="fw-bold mb-2" style="color: #2d3436;">Success! We're on it.</h3>
-                    <p class="text-secondary mb-4">Your account is being carefully prepared. This process ensures
+                    <h3 class="fw-bold mb-2" >Success! We're on it.</h3>
+                    <p class="mb-4">Your account is being carefully prepared. This process ensures
                         everything is secure and ready for your first login.</p>
 
                     <div class="p-3 mb-4" style="background-color: #f1f3f5; border-left: 4px solid #1e7e34;">
@@ -1693,8 +1693,8 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-gradient w-100 py-3 rounded-pill" data-bs-dismiss="modal">
-                        Great, I'll wait for the email
+                    <button type="button" class="btn btn-primary border w-100 py-3 rounded-pill" data-bs-dismiss="modal">
+                        Cancel
                     </button>
 
                     <p class="mt-4 mb-0 tiny text-muted" style="font-size: 0.8rem;">
@@ -1783,11 +1783,18 @@
             </div>
         </div>
     </div> -->
-    <!-- <div class="modal fade" id="signupSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-hidden="true">
+    <div class="modal fade" id="signupSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true" >
         <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+           
             <div class="modal-content"
                 style="border-radius: 16px; border: none; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.08); background: #fff; font-family: 'Segoe UI', Arial, sans-serif;">
+
+                  <div class="btn-wrapper">
+                            <button class="close-btn" data-bs-dismiss="modal">
+                                <img src="assets/imgs/icon/cross.webp" alt="icon image">
+                            </button>
+            </div>
 
                 <div
                     style="background: linear-gradient(135deg, #4f46e5, #4338ca); color: white; text-align: center; padding: 28px 20px;">
@@ -1832,7 +1839,7 @@
                         </div>
                     </div>
 
-                    <div
+                    <!-- <div
                         style="text-align: left; background: #f9fafb; border-radius: 10px; padding: 16px; margin-top: 16px; border-left: 4px solid #e5e7eb;">
                         <div class="d-flex align-items-center gap-1"
                             style="font-weight: 600; font-size: 14px; margin-bottom: 6px;">
@@ -1853,7 +1860,7 @@
                             <li style="font-size: 13px; margin-bottom: 6px;">Start building and deploying your apps on
                                 AXI</li>
                         </ul>
-                    </div>
+                    </div> -->
 
                     <div style="font-size: 11px; margin-top: 18px;">
                         Didn’t receive the email? Check your spam folder or try again.<br />
@@ -1871,8 +1878,8 @@
 
             </div>
         </div>
-    </div> -->
-    <div class="modal fade" id="setupProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    </div>
+   <!-- <div class="modal fade" id="setupProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-hidden="true" style="background: none;">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 480px; max-height: 80vh; background: none;">
             <div class="modal-content"
@@ -1880,14 +1887,14 @@
                 <div style="padding:18px; text-align:center; background:linear-gradient(135deg,#4f46e5,#4338ca);">
                     <div style="font-size:20px; font-weight:700; color: white;">AXI</div>
                     <div style="font-size:12px; opacity:0.85; color: white;">Cloud Application Platform</div>
-                    <!-- <div class="btn-wrapper">
+                     <div class="btn-wrapper">
                         <button class="close-btn" data-bs-dismiss="modal">
                             <img src="assets/imgs/icon/cross.webp" alt="icon image">
                         </button>
                     </div> -->
-                </div>
+                <!-- </div> -->
 
-                <div class="modal-body" style="padding:20px; text-align:center;">
+                <!-- <div class="modal-body" style="padding:20px; text-align:center;">
 
                     <div
                         style="display:inline-block; background:#1e3a8a; color:#93c5fd; font-size:11px; padding:6px 10px; border-radius:999px; margin-bottom:14px;">
@@ -1924,7 +1931,7 @@
 
             </div>
         </div>
-    </div>
+    </div> --> 
 
 
     <!-- All JS files -->
