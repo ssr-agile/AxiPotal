@@ -401,9 +401,11 @@
     return Array.isArray(rows) && rows.length > 0;
   }
   async function _axiUserValidate(email, SSOKey, SSOProvider) {
+     const loginErrEl = document.getElementById("axi-login-error");
     const response = await api.axiUserValidate(email, SSOKey, SSOProvider);
 
     if (!response?.Success) {
+       window.ui.showErr(loginErrEl, response?.Message);
       throw new Error(response?.message || "Validation failed for: " + email);
     }
 
